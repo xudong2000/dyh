@@ -39,8 +39,8 @@
           </div>
         </el-form-item>
 
-        <el-form-item>
-          <el-select v-model="value" placeholder="请选择您的身份">
+        <el-form-item prop="identity">
+          <el-select v-model="loginForm.identity" placeholder="请选择您的身份">
             <el-option
               v-for="item in options"
               :key="item.value"
@@ -63,7 +63,11 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapActions, mapMutations } from "vuex";
+import {
+  getAdminsDataByName,
+  getTeachersDataByName,
+  getStudentsDataByName,
+} from "../../network/login";
 
 export default {
   name: "Login",
@@ -72,6 +76,7 @@ export default {
       loginForm: {
         username: "wxd",
         password: "wxd3416",
+        identity: "",
       },
       loginRules: {
         username: [
@@ -87,21 +92,25 @@ export default {
             trigger: "blur",
           },
         ],
+        identity: [
+          { required: true, message: "请选择您登录的身份", trigger: "change" },
+        ],
       },
       options: [
         {
-          value: "学生",
+          value: "student",
           label: "学生",
         },
         {
-          value: "老师",
+          value: "teacher",
           label: "老师",
         },
         {
-          value: "管理员",
+          value: "admin",
           label: "管理员",
         },
       ],
+      // 下拉框中的值
       value: "",
       // 是否加载中
       isLoading: false,
@@ -113,9 +122,9 @@ export default {
   },
   mounted() {
     this.canvas();
-    this.$store.dispatch("login/aGetStudentsData");
   },
   methods: {
+    // 背景动效
     canvas() {
       function Star(id, x, y) {
         this.id = id;
@@ -314,19 +323,134 @@ export default {
         return deg * (Math.PI / 180);
       }
     },
+    // 重置输入框
     resetForm() {
       this.$refs.loginRef.resetFields();
     },
+    // 处理用户登录
     login() {
       this.isLoading = true;
       this.$refs.loginRef.validate((valid) => {
         if (!valid) {
           this.isLoading = false;
-          return this.$message.error("用户名或密码不符合规范");
+          return this.$message.error("您输入的登录信息不符合规范");
         } else {
+          const { username, password, identity } = this.loginForm;
+          window.sessionStorage.setItem("username", username);
+          if (identity === "admin") {
+            setTimeout(() => {
+              this.isLoading = false;
+              getAdminsDataByName(username).then((res) => {
+                const { data } = res.data;
+                console.log(data);
+                if (data.length === 0) {
+                  this.$message({
+                    showClose: true,
+                    message: "该用户不存在",
+                    type: "error",
+                  });
+                } else {
+                  if (data[0].a_pwd === password) {
+                    window.sessionStorage.setItem(
+                      "curUser",
+                      JSON.stringify(data)
+                    );
+                    window.sessionStorage.setItem("identity", identity);
+                    this.$router.push("/home");
+                    this.$message({
+                      showClose: true,
+                      message: "登录成功",
+                      type: "success",
+                    });
+                  } else {
+                    this.$message({
+                      showClose: true,
+                      message: "密码错误",
+                      type: "error",
+                    });
+                  }
+                }
+              });
+            }, 1000);
+          }
+
+          if (identity === "teacher") {
+            setTimeout(() => {
+              this.isLoading = false;
+              getTeachersDataByName(username).then((res) => {
+                const { data } = res.data;
+                console.log(data);
+                if (data.length === 0) {
+                  this.$message({
+                    showClose: true,
+                    message: "该用户不存在",
+                    type: "error",
+                  });
+                } else {
+                  if (data[0].t_pwd === password) {
+                    window.sessionStorage.setItem(
+                      "curUser",
+                      JSON.stringify(data)
+                    );
+                    window.sessionStorage.setItem("identity", identity);
+                    this.$router.push("/home");
+                    this.$message({
+                      showClose: true,
+                      message: "登录成功",
+                      type: "success",
+                    });
+                  } else {
+                    this.$message({
+                      showClose: true,
+                      message: "密码错误",
+                      type: "error",
+                    });
+                  }
+                }
+              });
+            }, 1000);
+          }
+
+          if (identity === "student") {
+            setTimeout(() => {
+              this.isLoading = false;
+              getStudentsDataByName(username).then((res) => {
+                const { data } = res.data;
+                console.log(data);
+                if (data.length === 0) {
+                  this.$message({
+                    showClose: true,
+                    message: "该用户不存在",
+                    type: "error",
+                  });
+                } else {
+                  if (data[0].s_pwd === password) {
+                    window.sessionStorage.setItem(
+                      "curUser",
+                      JSON.stringify(data)
+                    );
+                    window.sessionStorage.setItem("identity", identity);
+                    this.$router.push("/home");
+                    this.$message({
+                      showClose: true,
+                      message: "登录成功",
+                      type: "success",
+                    });
+                  } else {
+                    this.$message({
+                      showClose: true,
+                      message: "密码错误",
+                      type: "error",
+                    });
+                  }
+                }
+              });
+            }, 1000);
+          }
         }
       });
     },
+    // 显示或隐藏密码
     toggle() {
       this.isShow = !this.isShow;
       this.isShow === true ? (this.isPwd = "text") : (this.isPwd = "password");
