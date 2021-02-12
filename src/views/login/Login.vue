@@ -6,6 +6,11 @@
         <img src="../../assets/img/login/dyh.jpg" alt="" />
       </div>
 
+      <div class="title">
+        <span>登</span>
+        <span>录</span>
+      </div>
+
       <el-form
         ref="loginRef"
         :model="loginForm"
@@ -72,16 +77,25 @@ import {
 export default {
   name: "Login",
   data() {
+    var validateName = (rule, value, callback) => {
+      var name = /^[\u4e00-\u9fa5]{2,6}$/;
+      var result = name.test(value);
+      if (result === false) {
+        callback(new Error("用户名只能为2-6个字符之间的汉字"));
+      } else {
+        callback();
+      }
+    };
     return {
       loginForm: {
-        username: "wxd",
+        username: "王旭东",
         password: "wxd3416",
         identity: "",
       },
       loginRules: {
         username: [
           { required: true, message: "请输入用户名", trigger: "blur" },
-          { min: 2, max: 6, message: "长度在 2 到 6 个字符", trigger: "blur" },
+          { validator: validateName, trigger: "blur" },
         ],
         password: [
           { required: true, message: "请输入密码", trigger: "blur" },
@@ -98,15 +112,15 @@ export default {
       },
       options: [
         {
-          value: "student",
+          value: "学生",
           label: "学生",
         },
         {
-          value: "teacher",
+          value: "老师",
           label: "老师",
         },
         {
-          value: "admin",
+          value: "管理员",
           label: "管理员",
         },
       ],
@@ -333,16 +347,14 @@ export default {
       this.$refs.loginRef.validate((valid) => {
         if (!valid) {
           this.isLoading = false;
-          return this.$message.error("您输入的登录信息不符合规范");
+          return this.$message.error("您提交的登录信息不符合规范！");
         } else {
           const { username, password, identity } = this.loginForm;
-          window.sessionStorage.setItem("username", username);
-          if (identity === "admin") {
+          if (identity === "管理员") {
             setTimeout(() => {
               this.isLoading = false;
               getAdminsDataByName(username).then((res) => {
                 const { data } = res.data;
-                console.log(data);
                 if (data.length === 0) {
                   this.$message({
                     showClose: true,
@@ -350,16 +362,18 @@ export default {
                     type: "error",
                   });
                 } else {
-                  if (data[0].a_pwd === password) {
+                  if (data[0].pwd === password) {
+                    console.log(data);
                     window.sessionStorage.setItem(
                       "curUser",
                       JSON.stringify(data)
                     );
                     window.sessionStorage.setItem("identity", identity);
+                    window.sessionStorage.setItem("username", username);
                     this.$router.push("/home");
                     this.$message({
                       showClose: true,
-                      message: "登录成功",
+                      message: "欢迎回来：" + username + identity,
                       type: "success",
                     });
                   } else {
@@ -374,12 +388,11 @@ export default {
             }, 1000);
           }
 
-          if (identity === "teacher") {
+          if (identity === "老师") {
             setTimeout(() => {
               this.isLoading = false;
               getTeachersDataByName(username).then((res) => {
                 const { data } = res.data;
-                console.log(data);
                 if (data.length === 0) {
                   this.$message({
                     showClose: true,
@@ -387,16 +400,18 @@ export default {
                     type: "error",
                   });
                 } else {
-                  if (data[0].t_pwd === password) {
+                  if (data[0].pwd === password) {
+                    console.log(data);
                     window.sessionStorage.setItem(
                       "curUser",
                       JSON.stringify(data)
                     );
                     window.sessionStorage.setItem("identity", identity);
+                    window.sessionStorage.setItem("username", username);
                     this.$router.push("/home");
                     this.$message({
                       showClose: true,
-                      message: "登录成功",
+                      message: "欢迎回来：" + username + identity,
                       type: "success",
                     });
                   } else {
@@ -411,12 +426,11 @@ export default {
             }, 1000);
           }
 
-          if (identity === "student") {
+          if (identity === "学生") {
             setTimeout(() => {
               this.isLoading = false;
               getStudentsDataByName(username).then((res) => {
                 const { data } = res.data;
-                console.log(data);
                 if (data.length === 0) {
                   this.$message({
                     showClose: true,
@@ -424,16 +438,18 @@ export default {
                     type: "error",
                   });
                 } else {
-                  if (data[0].s_pwd === password) {
+                  if (data[0].pwd === password) {
+                    console.log(data);
                     window.sessionStorage.setItem(
                       "curUser",
                       JSON.stringify(data)
                     );
                     window.sessionStorage.setItem("identity", identity);
+                    window.sessionStorage.setItem("username", username);
                     this.$router.push("/home");
                     this.$message({
                       showClose: true,
-                      message: "登录成功",
+                      message: "欢迎回来：" + username,
                       type: "success",
                     });
                   } else {
@@ -466,7 +482,7 @@ export default {
 }
 #login {
   width: 100%;
-  height: 100%;
+  height: 100vh;
   overflow: hidden;
   background: black;
   background: linear-gradient(to bottom, #000000 0%, #5788fe 100%);
@@ -498,6 +514,16 @@ export default {
   height: 100%;
   border-radius: 50%;
   background-color: #eee;
+}
+
+.title {
+  width: 40%;
+  height: 30px;
+  margin: 20px auto;
+  display: flex;
+  justify-content: space-between;
+  color: #5788fe;
+  font-size: 20px;
 }
 
 .login-form {

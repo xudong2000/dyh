@@ -1,14 +1,23 @@
 <template>
-  <div id="home">
+  <div id="home" v-loading="isLoading">
     <el-container>
       <el-header>
-        <div class="logo">
-          <img src="" alt="" />
+        <!-- <div class="logo">
+          <img src="../../assets/img/home/dyh.png" alt="" />
+        </div> -->
+
+        <div class="time">
+          <span>{{ time }}</span>
         </div>
 
         <div class="avatar">
-          <el-avatar :size="40" src=""></el-avatar>
-          <span class="nickName">{{ uname }}</span>
+          <el-avatar :size="40" :src="userData[0].avatar"></el-avatar>
+          <span
+            class="nickName"
+            :style="{ color: id === '管理员' ? 'gold' : 'pink' }"
+            >{{ userData[0].name }}</span
+          >
+          <!-- <span class="identity">{{ id }}</span> -->
         </div>
 
         <div class="out" @click="out">
@@ -22,7 +31,7 @@
             <i class="el-icon-more"></i>
           </div>
           <el-menu
-            default-active="/index"
+            :default-active="$route.path"
             class="el-menu-vertical-demo"
             background-color="#545c64"
             text-color="#fff"
@@ -47,7 +56,7 @@
               <slot name="icon-four"><i class="el-icon-menu"></i></slot>
               <span slot="title">班级管理</span>
             </el-menu-item>
-            <el-menu-item index="/admin" v-show="id === 'admin'">
+            <el-menu-item index="/admin" v-show="id === '管理员'">
               <slot name="icon-four"><i class="el-icon-menu"></i></slot>
               <span slot="title">管理员</span>
             </el-menu-item>
@@ -55,7 +64,7 @@
         </el-aside>
 
         <el-main>
-          <router-view />
+          <router-view :user="id" />
         </el-main>
       </el-container>
     </el-container>
@@ -75,21 +84,78 @@ export default {
       userData: [],
       // 当前用户身份
       id: "",
+      // 当前时间
+      time: "",
+      // 是否加载中
+      isLoading: false,
     };
   },
   created() {
+    this.isLoading = true;
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 1100);
+
     this.uname = window.sessionStorage.getItem("username");
-    console.log(this.uname);
+    // console.log(this.uname);
 
     let curUser = window.sessionStorage.getItem("curUser");
     this.userData = JSON.parse(curUser);
-    console.log(this.userData);
+    // console.log(this.userData);
 
     this.id = window.sessionStorage.getItem("identity");
-    console.log(this.id);
+    // console.log(this.id);
+
+    setInterval(() => {
+      this.getTime();
+    }, 1000);
   },
-  mounted() {},
   methods: {
+    getTime() {
+      // 获取时间
+      var date = new Date();
+      //月
+      var month = date.getMonth();
+      month = month + 1;
+      if (month < 10) {
+        month = "0" + month;
+      }
+      //日
+      var riqi = date.getDate();
+      if (riqi < 10) {
+        riqi = "0" + riqi;
+      }
+      //小时
+      var hour = date.getHours();
+      if (hour < 10) {
+        hour = "0" + hour;
+      }
+      //分钟
+      var minute = date.getMinutes();
+      if (minute < 10) {
+        minute = "0" + minute;
+      }
+      //秒钟
+      var second = date.getSeconds();
+      if (second < 10) {
+        second = "0" + second;
+      }
+
+      //时间的格式为：2018-01-01 01:01:01
+      this.time =
+        date.getFullYear() +
+        "-" +
+        month +
+        "-" +
+        riqi +
+        " " +
+        hour +
+        ":" +
+        minute +
+        ":" +
+        second;
+      // console.log(this.time);
+    },
     toggle() {
       this.isCollapse = !this.isCollapse;
     },
@@ -101,11 +167,14 @@ export default {
         })
           .then(() => {
             window.sessionStorage.clear();
-            this.$router.push("/login");
+            setTimeout(() => {
+              this.$router.push("/login");
+            }, 1000);
           })
           .catch(() => {
             this.isLoading = false;
             this.$message({
+              showClose: true,
               type: "info",
               message: "稍等片刻",
             });
@@ -144,6 +213,7 @@ export default {
 .el-main {
   background-color: #e9eef3;
   color: #333;
+  padding-bottom: 0 !important;
   /* text-align: center; */
   /* line-height: 160px; */
 }
@@ -179,10 +249,10 @@ export default {
 
 /* 用户头像 */
 .avatar {
-  width: 120px;
+  width: auto;
   height: 60px;
   position: absolute;
-  right: 14%;
+  right: 16%;
   top: 0;
 }
 .el-avatar--circle {
@@ -193,6 +263,20 @@ export default {
   font-size: 20px;
   margin-left: 10px;
   color: #fff;
+}
+.identity {
+  color: #fff;
+}
+
+/* 当前时间 */
+.time {
+  width: 230px;
+  height: 100%;
+  color: #fff;
+  font-size: 20px;
+  position: absolute;
+  left: 0;
+  top: 0;
 }
 
 /* 退出登录 */

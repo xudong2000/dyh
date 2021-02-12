@@ -1,17 +1,17 @@
 <template>
-  <div id="class">
-    <h2>班级管理</h2>
+  <div id="index">
+    <h2>首页</h2>
   </div>
 </template>
 
 <script>
 export default {
-  name: "Class",
+  name: "Index",
 };
 </script>
 
 <style scoped>
-#class {
+#index {
   width: 100%;
   height: 100%;
   background-color: #fff;

@@ -48,6 +48,9 @@ import {
   Backtop,
   Icon,
   Rate,
+  Collapse,
+  CollapseItem,
+  Notification,
 } from 'element-ui'
 
 Vue.use(Button)
@@ -96,5 +99,8 @@ Vue.use(Upload)
 Vue.use(Backtop)
 Vue.use(Icon)
 Vue.use(Rate)
+Vue.use(Collapse)
+Vue.use(CollapseItem)
 Vue.prototype.$message = Message
 Vue.prototype.$confirm = MessageBox.confirm
+Vue.prototype.$notify = Notification

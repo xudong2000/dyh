@@ -1,18 +1,10 @@
 import { request } from './axios'
 
-// 导出获取所有学生数据函数
-// export function getStudentsData() {
-//   return request({
-//     method: 'get',
-//     url: '/student',
-//   })
-// }
-
-// 导出通过姓名获取学生数据函数
+// 导出通过姓名获取学生数据方法
 export function getStudentsDataByName(uname) {
   return request({
     method: 'get',
-    url: '/curStudent?s_name=' + uname,
+    url: '/curStudent?name=' + uname,
   })
 }
 
@@ -24,11 +16,11 @@ export function getStudentsDataByName(uname) {
 //   })
 // }
 
-// 导出通过姓名获取老师数据函数
+// 导出通过姓名获取老师数据方法
 export function getTeachersDataByName(uname) {
   return request({
     method: 'get',
-    url: '/curTeacher?t_name=' + uname,
+    url: '/curTeacher?name=' + uname,
   })
 }
 
@@ -40,10 +32,10 @@ export function getTeachersDataByName(uname) {
 //   })
 // }
 
-// 导出通过姓名获取管理员数据函数
+// 导出通过姓名获取管理员数据方法
 export function getAdminsDataByName(uname) {
   return request({
     method: 'get',
-    url: '/curAdmin?a_name=' + uname,
+    url: '/curAdmin?name=' + uname,
   })
 }

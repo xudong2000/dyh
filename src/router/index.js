@@ -2,14 +2,15 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 const Login = () => import('../views/login/Login.vue')
+
+const Register = () => import('../views/register/Register.vue')
+
+const Home = () => import('../views/home/Home.vue')
+const Index = () => import('../views/index/Index.vue')
 const Student = () => import('../views/student/Student.vue')
 const Teacher = () => import('../views/teacher/Teacher.vue')
 const Class = () => import('../views/class/Class.vue')
 const Admin = () => import('../views/admin/Admin.vue')
-
-// const Register = () => import('../views/register/Register.vue')
-
-const Home = () => import('../views/home/Home.vue')
 
 Vue.use(VueRouter)
 
@@ -23,10 +24,18 @@ const routes = [
     component: Login,
   },
   {
+    path: '/register',
+    component: Register,
+  },
+  {
     path: '/home',
     component: Home,
-    redirect: '/student',
+    redirect: '/index',
     children: [
+      {
+        path: '/index',
+        component: Index,
+      },
       {
         path: '/student',
         component: Student,
