@@ -14,6 +14,7 @@ const state = {
 const getters = {}
 
 const actions = {
+  // 获取所有学生数据
   aGetStudentsData({ state, commit }) {
     getStudentsData().then(
       (res) => {
@@ -26,6 +27,7 @@ const actions = {
     )
   },
 
+  // 通过姓名删除指定学生
   aDeleStudentsByName({ commit }, uname) {
     deleStudentsByName(uname).then(
       (res) => {
@@ -39,6 +41,7 @@ const actions = {
 }
 
 const mutations = {
+  // 获取所有学生数据
   mGetStudentsData(state, data) {
     state.studentsData = []
     state.removeStuData = []
@@ -70,6 +73,25 @@ const mutations = {
       var time = date.getFullYear() + '-' + month + '-' + riqi
       // 将每个日期字符串替换成日期类型
       i.startTime = time
+
+      // 将字符串转换成日期类型
+      var date1 = new Date(Date.parse(i.birthday))
+      //月
+      var month1 = date1.getMonth()
+      month1 = month1 + 1
+      if (month1 < 10) {
+        month1 = '0' + month1
+      }
+      //日
+      var riqi1 = date1.getDate()
+      if (riqi1 < 10) {
+        riqi1 = '0' + riqi1
+      }
+      //时间的格式为：2018-01-01
+      var time1 = date1.getFullYear() + '-' + month1 + '-' + riqi1
+      // 将每个日期字符串替换成日期类型
+      i.birthday = time1
+
       if (i.startTime === '2000-01-01') {
         state.undoneNum++
       }

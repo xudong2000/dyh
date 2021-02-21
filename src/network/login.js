@@ -1,20 +1,12 @@
 import { request } from './axios'
 
-// 导出通过姓名获取学生数据方法
-export function getStudentsDataByName(uname) {
+// 导出通过参数获取学生指定数据方法
+export function getStudentsDataByParams(key, value) {
   return request({
     method: 'get',
-    url: '/curStudent?name=' + uname,
+    url: '/curStudent?' + key + '=' + value,
   })
 }
-
-//　导出获取所有老师数据函数
-// export function getTeachersData() {
-//   return request({
-//     method: 'get',
-//     url: '/teacher',
-//   })
-// }
 
 // 导出通过姓名获取老师数据方法
 export function getTeachersDataByName(uname) {

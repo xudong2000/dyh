@@ -35,8 +35,7 @@
               </el-table-column>
               <el-table-column prop="age" label="年龄" width="100">
               </el-table-column>
-              <el-table-column prop="hometown" label="籍贯" width="200">
-              </el-table-column>
+              <el-table-column prop="hometown" label="籍贯"> </el-table-column>
               <el-table-column prop="specialty" label="所学专业" width="100">
               </el-table-column>
               <el-table-column prop="c_id" label="所在班级" width="100">
@@ -45,7 +44,7 @@
               </el-table-column>
               <el-table-column prop="dormitory" label="宿舍号" width="100">
               </el-table-column>
-              <el-table-column fixed="right" label="操作">
+              <el-table-column fixed="right" label="操作" width="150">
                 <template slot-scope="scope">
                   <el-button
                     @click="handleClick(scope.row)"
@@ -56,8 +55,14 @@
                   <el-button
                     type="text"
                     size="small"
-                    v-show="user === '管理员' ? true : false"
-                    @click="dialogFormVisible = true"
+                    v-show="
+                      user === '管理员'
+                        ? true
+                        : false || studentsData.name === uname
+                        ? true
+                        : false
+                    "
+                    @click="editStudent(scope.row)"
                     >编辑</el-button
                   >
                   <el-button
@@ -158,107 +163,20 @@
     </el-dialog>
 
     <!-- 编辑 -->
-    <el-dialog
-      title="编辑学生个人资料"
-      :visible.sync="dialogFormVisible"
-      width="50%"
-    >
-      <el-form :model="editForm">
-        <el-form-item label="头像地址" :label-width="formLabelWidth">
-          <el-input
-            v-model="editForm.avatar"
-            autocomplete="off"
-            clearable
-          ></el-input>
-        </el-form-item>
-
-        <el-form-item label="学生姓名" :label-width="formLabelWidth">
-          <el-input v-model="editForm.name" autocomplete="off"></el-input>
-        </el-form-item>
-
-        <el-form-item label="学生性别" :label-width="formLabelWidth">
-          <el-input v-model="editForm.name" autocomplete="off"></el-input>
-        </el-form-item>
-
-        <el-form-item label="学生年龄" :label-width="formLabelWidth">
-          <el-input v-model="editForm.name" autocomplete="off"></el-input>
-        </el-form-item>
-
-        <el-form-item label="籍贯" :label-width="formLabelWidth">
-          <el-input v-model="editForm.name" autocomplete="off"></el-input>
-        </el-form-item>
-
-        <el-form-item label="出生日期" :label-width="formLabelWidth">
-          <el-input v-model="editForm.name" autocomplete="off"></el-input>
-        </el-form-item>
-
-        <el-form-item label="入学日期" :label-width="formLabelWidth">
-          <el-input v-model="editForm.name" autocomplete="off"></el-input>
-        </el-form-item>
-
-        <el-form-item label="班里职位" :label-width="formLabelWidth">
-          <el-input v-model="editForm.name" autocomplete="off"></el-input>
-        </el-form-item>
-
-        <el-form-item label="宿舍号" :label-width="formLabelWidth">
-          <el-input v-model="editForm.name" autocomplete="off"></el-input>
-        </el-form-item>
-
-        <el-form-item label="当前班级" :label-width="formLabelWidth">
-          <el-input v-model="editForm.name" autocomplete="off"></el-input>
-        </el-form-item>
-
-        <el-form-item label="班主任" :label-width="formLabelWidth">
-          <el-input v-model="editForm.name" autocomplete="off"></el-input>
-        </el-form-item>
-
-        <el-form-item label="就业方向" :label-width="formLabelWidth">
-          <el-input v-model="editForm.name" autocomplete="off"></el-input>
-        </el-form-item>
-
-        <el-collapse v-model="activeNames" style="margin-bottom: 10px">
-          <el-collapse-item title="联系方式" name="1">
-            <el-form-item label="手机号" :label-width="formLabelWidth">
-              <el-input v-model="editForm.name" autocomplete="off"></el-input>
-            </el-form-item>
-
-            <el-form-item label="邮箱" :label-width="formLabelWidth">
-              <el-input v-model="editForm.name" autocomplete="off"></el-input>
-            </el-form-item>
-
-            <el-form-item label="QQ号" :label-width="formLabelWidth">
-              <el-input v-model="editForm.name" autocomplete="off"></el-input>
-            </el-form-item>
-
-            <el-form-item label="微信号" :label-width="formLabelWidth">
-              <el-input v-model="editForm.name" autocomplete="off"></el-input>
-            </el-form-item>
-          </el-collapse-item>
-        </el-collapse>
-
-        <el-form-item label="个性签名" :label-width="formLabelWidth">
-          <el-input v-model="editForm.name" autocomplete="off"></el-input>
-        </el-form-item>
-
-        <el-form-item label="照片展示" :label-width="formLabelWidth">
-          <el-input v-model="editForm.name" autocomplete="off"></el-input>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogFormVisible = false"
-          >确 定</el-button
-        >
-      </div>
-    </el-dialog>
+    <edit-form ref="edit" :userData="userData" />
   </div>
 </template>
 
 <script>
 import { mapState } from "vuex";
 
+import EditForm from "./child/EditForm";
+
 export default {
   name: "Student",
+  components: {
+    EditForm,
+  },
   data() {
     return {
       activeName: "first",
@@ -273,23 +191,16 @@ export default {
       // 当前用户数据
       userData: "",
       activeNames: ["2"],
-      dialogFormVisible: false,
-      editForm: {
-        name: "",
-        region: "",
-        date1: "",
-        date2: "",
-        delivery: false,
-        type: [],
-        resource: "",
-        desc: "",
-      },
       formLabelWidth: "100px",
+      // 定时器
       timer: "",
+      // 当前用户名
+      uname: "",
     };
   },
   props: ["user"],
   created() {
+    this.uname = sessionStorage.getItem("username");
     this.$store.dispatch("student/aGetStudentsData");
     this.timer = setTimeout(() => {
       this.open();
@@ -357,6 +268,7 @@ export default {
     ...mapState("student", ["studentsData", "undoneNum"]),
   },
   methods: {
+    // 消息提示
     open() {
       if (this.user === "管理员") {
         const h = this.$createElement;
@@ -383,6 +295,20 @@ export default {
     handleClick(row) {
       this.dialogVisible = true;
       this.userData = row;
+    },
+    // 处理编辑学生数据
+    editStudent(row) {
+      this.$refs.edit.dialogFormVisible = true;
+      for (let i in row) {
+        if (Number.isInteger(row[i])) {
+          if (i === "telephone" || i === "qq") {
+            row[i] = row[i] + "";
+          }
+        }
+      }
+      this.userData = row;
+      this.$store.dispatch("team/aGetClassData");
+      this.$store.dispatch("teacher/aGetTeachersData");
     },
     // 处理删除学生操作
     deleteRow(index, rows) {
@@ -411,6 +337,7 @@ export default {
     },
     // 处理添加学生操作
     addStudent() {
+      clearTimeout(this.timer);
       sessionStorage.setItem("regId", "学生");
       const loading = this.$loading({
         lock: true,

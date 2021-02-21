@@ -104,7 +104,7 @@
 import {
   getAdminsDataByName,
   getTeachersDataByName,
-  getStudentsDataByName,
+  getStudentsDataByParams,
 } from "../../network/login";
 import { addStudentsData } from "../../network/student";
 import { mapState } from "vuex";
@@ -134,10 +134,10 @@ export default {
     return {
       registerForm: {
         s_id: 0,
-        name: "",
-        pwd: "",
-        checkPwd: "",
-        telephone: "",
+        name: "王旭东",
+        pwd: "wxd3416",
+        checkPwd: "wxd3416",
+        telephone: "17674600290",
         identity: "",
       },
       registerRules: {
@@ -193,6 +193,8 @@ export default {
       isShow: false,
       // 更改输入框的类型
       isPwd: "password",
+      // 当前手机号
+      phone: "",
     };
   },
   created() {
@@ -224,49 +226,74 @@ export default {
           this.isLoading = false;
           return this.$message.error("您提交的注册信息不符合规范！");
         } else {
-          console.log(this.registerForm);
-          const { name, identity } = this.registerForm;
+          // console.log(this.registerForm);
+          const { identity } = this.registerForm;
           if (identity === "学生") {
             setTimeout(() => {
               this.isLoading = false;
-              getStudentsDataByName(name).then((res) => {
-                const { data } = res.data;
-                if (data.length === 0) {
-                  addStudentsData(this.registerForm).then(
+              for (let i in this.registerForm) {
+                if (i === "telephone") {
+                  getStudentsDataByParams(i, this.registerForm[i]).then(
                     (res) => {
-                      this.resetForm();
-                      this.$confirm(
-                        "添加学生成功，是否跳转到学生管理界面?",
-                        "提示",
-                        {
-                          confirmButtonText: "确定",
-                          cancelButtonText: "取消",
-                          type: "warning",
-                        }
-                      )
-                        .then(() => {
-                          this.$router.go(-1);
-                        })
-                        .catch(() => {
-                          this.$message({
-                            showClose: true,
-                            type: "info",
-                            message: "已取消跳转",
-                          });
-                        });
+                      this.phone = res.data.data;
                     },
                     (err) => {
-                      console.log("添加数据失败" + err);
+                      console.log("查询数据失败" + err);
                     }
                   );
-                } else {
-                  this.$message({
-                    showClose: true,
-                    message: "该学生已被注册",
-                    type: "error",
-                  });
                 }
-              });
+
+                if (i === "name") {
+                  getStudentsDataByParams(i, this.registerForm[i]).then(
+                    (res) => {
+                      const { data } = res.data;
+                      if (data.length === 0) {
+                        if (this.phone === 0) {
+                          addStudentsData(this.registerForm).then(
+                            (res) => {
+                              this.resetForm();
+                              this.$confirm(
+                                "添加学生成功，是否跳转到学生管理界面?",
+                                "提示",
+                                {
+                                  confirmButtonText: "确定",
+                                  cancelButtonText: "取消",
+                                  type: "warning",
+                                }
+                              )
+                                .then(() => {
+                                  this.$router.go(-1);
+                                })
+                                .catch(() => {
+                                  this.$message({
+                                    showClose: true,
+                                    type: "info",
+                                    message: "已取消跳转",
+                                  });
+                                });
+                            },
+                            (err) => {
+                              console.log("添加数据失败" + err);
+                            }
+                          );
+                        } else {
+                          this.$message({
+                            showClose: true,
+                            message: "该手机号已被注册",
+                            type: "error",
+                          });
+                        }
+                      } else {
+                        this.$message({
+                          showClose: true,
+                          message: "该学生已被注册",
+                          type: "error",
+                        });
+                      }
+                    }
+                  );
+                }
+              }
             }, 1000);
           }
         }

@@ -71,7 +71,7 @@
 import {
   getAdminsDataByName,
   getTeachersDataByName,
-  getStudentsDataByName,
+  getStudentsDataByParams,
 } from "../../network/login";
 
 export default {
@@ -429,7 +429,7 @@ export default {
           if (identity === "学生") {
             setTimeout(() => {
               this.isLoading = false;
-              getStudentsDataByName(username).then((res) => {
+              getStudentsDataByParams("name", username).then((res) => {
                 const { data } = res.data;
                 if (data.length === 0) {
                   this.$message({
