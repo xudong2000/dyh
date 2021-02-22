@@ -31,12 +31,12 @@
               </el-table-column>
               <el-table-column prop="name" label="学生姓名" width="100">
               </el-table-column>
-              <el-table-column prop="sex" label="性别" width="100">
+              <el-table-column prop="sex" label="性别" width="80">
               </el-table-column>
-              <el-table-column prop="age" label="年龄" width="100">
+              <el-table-column prop="age" label="年龄" width="80">
               </el-table-column>
               <el-table-column prop="hometown" label="籍贯"> </el-table-column>
-              <el-table-column prop="specialty" label="所学专业" width="100">
+              <el-table-column prop="specialty" label="所学专业" width="120">
               </el-table-column>
               <el-table-column prop="c_id" label="所在班级" width="100">
               </el-table-column>

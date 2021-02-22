@@ -203,6 +203,7 @@
           ></el-input>
         </el-form-item>
       </el-form>
+
       <div slot="footer" class="dialog-footer">
         <el-button @click="noModify">取消修改</el-button>
         <el-button type="primary" @click="modify" :loading="isLoading"
@@ -417,17 +418,17 @@ export default {
           label: "体育委员",
         },
       ],
+      // 是否加载中
       isLoading: false,
       telephone: "",
       email: "",
       qq: "",
       wechat: "",
+      result: false,
     };
   },
   props: ["userData"],
-  created() {
-    console.log(this.options);
-  },
+  created() {},
   computed: {
     ...mapState("team", ["allClassName"]),
     ...mapState("teacher", ["teachersName"]),
@@ -530,62 +531,128 @@ export default {
 
             setTimeout(() => {
               this.isLoading = false;
-              console.log(this.userData);
+
               if (this.telephone.length === 0) {
-                if (this.email.length === 0) {
-                  if (this.qq.length === 0) {
-                    if (this.wechat.length === 0) {
-                      this.dialogFormVisible = false;
-                      this.$message({
-                        showClose: true,
-                        message: "修改成功",
-                        type: "success",
-                      });
-                    } else {
-                      this.dialogFormVisible = true;
-                      this.$message({
-                        showClose: true,
-                        message: "该微信号已被注册",
-                        type: "error",
-                      });
-                    }
-                  } else {
-                    this.dialogFormVisible = true;
-                    this.$message({
-                      showClose: true,
-                      message: "该QQ号已被注册",
-                      type: "error",
-                    });
-                  }
-                } else {
-                  this.dialogFormVisible = true;
-                  this.$message({
-                    showClose: true,
-                    message: "该邮箱已被注册",
-                    type: "error",
-                  });
-                }
+                this.result = true;
               } else {
                 this.dialogFormVisible = true;
-                this.$message({
+                return this.$message({
                   showClose: true,
                   message: "该手机号已被注册",
                   type: "error",
                 });
               }
+
+              if (this.email.length === 0) {
+                this.result = true;
+              } else {
+                this.dialogFormVisible = true;
+                return this.$message({
+                  showClose: true,
+                  message: "该邮箱已被注册",
+                  type: "error",
+                });
+              }
+
+              if (this.qq.length === 0) {
+                this.result = true;
+              } else {
+                this.dialogFormVisible = true;
+                return this.$message({
+                  showClose: true,
+                  message: "该QQ号已被注册",
+                  type: "error",
+                });
+              }
+
+              if (this.wechat.length === 0) {
+                this.result = true;
+              } else {
+                this.dialogFormVisible = true;
+                return this.$message({
+                  showClose: true,
+                  message: "该微信号已被注册",
+                  type: "error",
+                });
+              }
+
+              if (this.result) {
+                this.dialogFormVisible = false;
+                this.$message({
+                  showClose: true,
+                  message: "修改成功",
+                  type: "success",
+                });
+              } else {
+                return this.$message({
+                  showClose: true,
+                  message: "不符合规范",
+                  type: "error",
+                });
+              }
+
+              // if (this.telephone.length === 0) {
+              //   if (this.email.length === 0) {
+              //     if (this.qq.length === 0) {
+              //       if (this.wechat.length === 0) {
+              //         this.dialogFormVisible = false;
+              //         this.$message({
+              //           showClose: true,
+              //           message: "修改成功",
+              //           type: "success",
+              //         });
+              //       } else {
+              //         this.dialogFormVisible = true;
+              //         this.$message({
+              //           showClose: true,
+              //           message: "该微信号已被注册",
+              //           type: "error",
+              //         });
+              //       }
+              //     } else {
+              //       this.dialogFormVisible = true;
+              //       this.$message({
+              //         showClose: true,
+              //         message: "该QQ号已被注册",
+              //         type: "error",
+              //       });
+              //     }
+              //   } else {
+              //     this.dialogFormVisible = true;
+              //     this.$message({
+              //       showClose: true,
+              //       message: "该邮箱已被注册",
+              //       type: "error",
+              //     });
+              //   }
+              // } else {
+              //   this.dialogFormVisible = true;
+              //   this.$message({
+              //     showClose: true,
+              //     message: "该手机号已被注册",
+              //     type: "error",
+              //   });
+              // }
             }, 1000);
           }
         });
     },
     // 取消修改
     noModify() {
-      // console.log(this.address);
-      (this.telephone = ""),
-        (this.email = ""),
-        (this.qq = ""),
-        (this.wechat = ""),
-        (this.dialogFormVisible = false);
-      this.$refs.editRef.resetFields();
+      this.$confirm("是否取消更改?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          this.dialogFormVisible = false;
+          this.$store.dispatch("student/aGetStudentsData");
+          this.$message({
+            type: "warning",
+            message: "已取消修改！",
+          });
+        })
+        .catch(() => {});
     },
     // 关闭对话框
     handleClose(done) {},
