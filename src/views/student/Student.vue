@@ -90,6 +90,7 @@
     <el-dialog
       :title="userData.name + '的个人资料'"
       :visible.sync="dialogVisible"
+      :before-close="handleClose"
       width="40%"
     >
       <p>
@@ -156,14 +157,12 @@
         /></a>
       </div>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogVisible = false"
-          >确 定</el-button
-        >
+        <el-button type="primary" @click="handleClose">确 定</el-button>
       </span>
     </el-dialog>
 
     <!-- 编辑 -->
-    <edit-form ref="edit" :userData="userData" />
+    <edit-form ref="edit" :userData="userData" :curName="curName" />
   </div>
 </template>
 
@@ -187,9 +186,12 @@ export default {
         { value: 434, name: "益州" },
         { value: 335, name: "西凉" },
       ],
+      // 详情
       dialogVisible: false,
       // 当前用户数据
       userData: "",
+      // 当前用户名
+      curName: "",
       activeNames: ["2"],
       formLabelWidth: "100px",
       // 定时器
@@ -294,7 +296,17 @@ export default {
     // 处理查看个人资料
     handleClick(row) {
       this.dialogVisible = true;
+      //row.hometown = row.hometown.join("");
       this.userData = row;
+    },
+    // 处理关闭详情框
+    handleClose(done) {
+      this.$confirm("确认关闭？")
+        .then((_) => {
+          this.dialogVisible = false;
+          done();
+        })
+        .catch((_) => {});
     },
     // 处理编辑学生数据
     editStudent(row) {
@@ -307,6 +319,7 @@ export default {
         }
       }
       this.userData = row;
+      this.curName = row.name;
       this.$store.dispatch("team/aGetClassData");
       this.$store.dispatch("teacher/aGetTeachersData");
     },

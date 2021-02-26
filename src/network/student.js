@@ -24,3 +24,12 @@ export function deleStudentsByName(uname) {
     url: '/deleStudent?name=' + uname,
   })
 }
+
+// 导出根据学生名修改当前学生数据方法
+export function updateStudentByName([uname, data]) {
+  return request({
+    method: 'post',
+    url: '/setStudent',
+    data: [uname, data],
+  })
+}

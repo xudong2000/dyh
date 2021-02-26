@@ -218,6 +218,7 @@
 import { options } from "../../../common/address";
 import { mapState } from "vuex";
 import { getStudentsDataByParams } from "../../../network/login";
+import { updateStudentByName } from "../../../network/student";
 
 export default {
   name: "EditForm",
@@ -345,21 +346,23 @@ export default {
           },
         ],
       },
+      // 表单宽度
       formLabelWidth: "100px",
+      // 默认高亮
       activeNames: ["2"],
+      // 编辑
       dialogFormVisible: false,
       // 保存所有省市区
       options: options,
-      // 保存当前选择的地址
-      address: ["湖南省", "永州市", "祁阳县", "龙山街道"],
+      // 就业方向
       mySpecialty: [
         {
-          value: "前端开发",
-          label: "前端开发",
+          value: "web前端",
+          label: "web前端",
         },
         {
-          value: "Java后端开发",
-          label: "Java后端开发",
+          value: "Java后端",
+          label: "Java后端",
         },
         {
           value: "UI设计",
@@ -370,10 +373,15 @@ export default {
           label: "软件测试",
         },
         {
+          value: "运维实施",
+          label: "运维实施",
+        },
+        {
           value: "嵌入式",
           label: "嵌入式",
         },
       ],
+      // 宿舍号
       myDormitory: [
         {
           value: "1010",
@@ -396,6 +404,7 @@ export default {
           label: "1014",
         },
       ],
+      // 班级职位
       myJob: [
         {
           value: "学生",
@@ -424,11 +433,11 @@ export default {
       email: "",
       qq: "",
       wechat: "",
+      // 结果是否为true
       result: false,
     };
   },
-  props: ["userData"],
-  created() {},
+  props: ["userData", "curName"],
   computed: {
     ...mapState("team", ["allClassName"]),
     ...mapState("teacher", ["teachersName"]),
@@ -578,6 +587,15 @@ export default {
 
               if (this.result) {
                 this.dialogFormVisible = false;
+                updateStudentByName([this.curName, this.userData]).then(
+                  (res) => {
+                    // console.log(res);
+                  },
+                  (err) => {
+                    console.log("修改数据失败" + err);
+                  }
+                );
+                this.$store.dispatch("student/aGetStudentsData");
                 this.$message({
                   showClose: true,
                   message: "修改成功",
@@ -590,49 +608,6 @@ export default {
                   type: "error",
                 });
               }
-
-              // if (this.telephone.length === 0) {
-              //   if (this.email.length === 0) {
-              //     if (this.qq.length === 0) {
-              //       if (this.wechat.length === 0) {
-              //         this.dialogFormVisible = false;
-              //         this.$message({
-              //           showClose: true,
-              //           message: "修改成功",
-              //           type: "success",
-              //         });
-              //       } else {
-              //         this.dialogFormVisible = true;
-              //         this.$message({
-              //           showClose: true,
-              //           message: "该微信号已被注册",
-              //           type: "error",
-              //         });
-              //       }
-              //     } else {
-              //       this.dialogFormVisible = true;
-              //       this.$message({
-              //         showClose: true,
-              //         message: "该QQ号已被注册",
-              //         type: "error",
-              //       });
-              //     }
-              //   } else {
-              //     this.dialogFormVisible = true;
-              //     this.$message({
-              //       showClose: true,
-              //       message: "该邮箱已被注册",
-              //       type: "error",
-              //     });
-              //   }
-              // } else {
-              //   this.dialogFormVisible = true;
-              //   this.$message({
-              //     showClose: true,
-              //     message: "该手机号已被注册",
-              //     type: "error",
-              //   });
-              // }
             }, 1000);
           }
         });
@@ -672,5 +647,8 @@ export default {
 }
 .el-collapse-item__content {
   width: 400px;
+}
+.el-cascader-menu:last-child {
+  height: 600px;
 }
 </style>

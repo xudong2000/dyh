@@ -221,6 +221,7 @@ export default {
     // 处理用户注册
     register() {
       this.isLoading = true;
+      this.phone = "";
       this.$refs.registerRef.validate((valid) => {
         if (!valid) {
           this.isLoading = false;
@@ -229,26 +230,29 @@ export default {
           // console.log(this.registerForm);
           const { identity } = this.registerForm;
           if (identity === "学生") {
+            for (let i in this.registerForm) {
+              if (i === "telephone") {
+                getStudentsDataByParams(i, this.registerForm[i]).then(
+                  (res) => {
+                    this.phone = res.data.data;
+                  },
+                  (err) => {
+                    console.log("查询数据失败" + err);
+                  }
+                );
+              }
+            }
+            console.log(this.phone);
             setTimeout(() => {
               this.isLoading = false;
               for (let i in this.registerForm) {
-                if (i === "telephone") {
-                  getStudentsDataByParams(i, this.registerForm[i]).then(
-                    (res) => {
-                      this.phone = res.data.data;
-                    },
-                    (err) => {
-                      console.log("查询数据失败" + err);
-                    }
-                  );
-                }
-
                 if (i === "name") {
                   getStudentsDataByParams(i, this.registerForm[i]).then(
                     (res) => {
                       const { data } = res.data;
                       if (data.length === 0) {
-                        if (this.phone === 0) {
+                        if (this.phone.length === 0) {
+                          console.log("未注册");
                           addStudentsData(this.registerForm).then(
                             (res) => {
                               this.resetForm();
@@ -277,6 +281,7 @@ export default {
                             }
                           );
                         } else {
+                          console.log("已注册");
                           this.$message({
                             showClose: true,
                             message: "该手机号已被注册",

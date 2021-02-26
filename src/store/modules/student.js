@@ -47,14 +47,17 @@ const mutations = {
     state.removeStuData = []
     state.undoneNum = 0
 
+    // 判断学生是否已被删除
     for (let i of data) {
       if (i.isDelete === false) {
+        // i.hometown = i.hometown.join('-')
         state.studentsData.push(i)
       } else {
         state.removeStuData.push(i)
       }
     }
 
+    // 将所有日期类型转换成年月
     for (let i of state.studentsData) {
       // 将字符串转换成日期类型
       var date = new Date(Date.parse(i.startTime))
@@ -96,6 +99,7 @@ const mutations = {
         state.undoneNum++
       }
     }
+    // console.log(state.studentsData)
   },
 }
 
