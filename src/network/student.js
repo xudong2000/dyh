@@ -18,7 +18,7 @@ export function addStudentsData(data) {
 }
 
 // 导出根据学生名删除当前学生数据方法
-export function deleStudentsByName(uname) {
+export function deleStudentByName(uname) {
   return request({
     method: 'get',
     url: '/deleStudent?name=' + uname,

@@ -65,6 +65,10 @@ const options = [
                 value: '高塘岭街道',
                 label: '高塘岭街道',
               },
+              {
+                value: '金山桥街道',
+                label: '金山桥街道',
+              },
             ],
           },
           {

@@ -1,4 +1,4 @@
-import { getStudentsData, deleStudentsByName } from '../../network/student'
+import { getStudentsData, deleStudentByName } from '../../network/student'
 
 const state = {
   // 保存所有学生数据
@@ -28,8 +28,8 @@ const actions = {
   },
 
   // 通过姓名删除指定学生
-  aDeleStudentsByName({ commit }, uname) {
-    deleStudentsByName(uname).then(
+  aDeleStudentByName({ commit }, uname) {
+    deleStudentByName(uname).then(
       (res) => {
         // console.log(res)
       },

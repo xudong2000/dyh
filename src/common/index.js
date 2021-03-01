@@ -15,7 +15,7 @@ const lecturers = [
     id: 2,
     name: '陈二',
     avatar:
-      'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fpic.uzzf.com%2Fup%2F2021-2%2F16140732077836073.jpg&refer=http%3A%2F%2Fpic.uzzf.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1616829591&t=7a83cf36b28c00e778894287c51c07e9',
+      'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2752148155,155093617&fm=26&gp=0.jpg',
     teachSpecialty: 'Java高级讲师',
     school: '华中科技大学',
     learnSpecialty: '计算机科学与技术',
@@ -27,7 +27,7 @@ const lecturers = [
     id: 3,
     name: '张三',
     avatar:
-      'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fpic.uzzf.com%2Fup%2F2021-2%2F16140732061775739.jpg&refer=http%3A%2F%2Fpic.uzzf.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1616827904&t=cf73926eb0132bca173e1551a0975e3d',
+      'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=221521724,481371925&fm=26&gp=0.jpg',
     teachSpecialty: 'UI设计讲师',
     school: '武汉大学',
     learnSpecialty: '计算机科学与技术',
@@ -39,7 +39,7 @@ const lecturers = [
     id: 4,
     name: '李四',
     avatar:
-      'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fpic.uzzf.com%2Fup%2F2021-2%2F16140732066823408.jpg&refer=http%3A%2F%2Fpic.uzzf.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1616828042&t=6973c102d49d478af9cc04bf2a01724a',
+      'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2796144188,439704386&fm=26&gp=0.jpg',
     teachSpecialty: '嵌入式讲师',
     school: '复旦大学',
     learnSpecialty: '计算机科学与技术',
@@ -51,7 +51,7 @@ const lecturers = [
     id: 5,
     name: '王五',
     avatar:
-      'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fpic.uzzf.com%2Fup%2F2021-2%2F16140732067557432.jpg&refer=http%3A%2F%2Fpic.uzzf.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1616828121&t=e156167d343e2706f7dc9ada30ef6687',
+      'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3848918876,1367705290&fm=26&gp=0.jpg',
     teachSpecialty: 'Java高级讲师',
     school: '湖南大学',
     learnSpecialty: '计算机科学与技术',
@@ -63,7 +63,7 @@ const lecturers = [
     id: 6,
     name: '赵六',
     avatar:
-      'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fww3.sinaimg.cn%2Fmw690%2F00743zkSly1gnd2kf00psj30rn0rndj9.jpg&refer=http%3A%2F%2Fwww.sina.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1616828231&t=07d43c7adcc86917e6424e3fb40ef50c',
+      'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3321636701,1048971300&fm=26&gp=0.jpg',
     teachSpecialty: '平面设计讲师',
     school: '湖南师范大学',
     learnSpecialty: '计算机科学与技术',

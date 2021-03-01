@@ -70,7 +70,7 @@
 <script>
 import {
   getAdminsDataByName,
-  getTeachersDataByName,
+  getTeachersDataByParams,
   getStudentsDataByParams,
 } from "../../network/login";
 
@@ -391,7 +391,7 @@ export default {
           if (identity === "老师") {
             setTimeout(() => {
               this.isLoading = false;
-              getTeachersDataByName(username).then((res) => {
+              getTeachersDataByParams("name", username).then((res) => {
                 const { data } = res.data;
                 if (data.length === 0) {
                   this.$message({

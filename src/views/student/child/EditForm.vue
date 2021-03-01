@@ -429,6 +429,7 @@ export default {
       ],
       // 是否加载中
       isLoading: false,
+      name: "",
       telephone: "",
       email: "",
       qq: "",
@@ -446,7 +447,8 @@ export default {
     // 确认修改
     modify() {
       this.isLoading = true;
-      (this.telephone = ""),
+      (this.name = ""),
+        (this.telephone = ""),
         (this.email = ""),
         (this.qq = ""),
         (this.wechat = ""),
@@ -457,6 +459,26 @@ export default {
             return this.$message.error("您修改的个人信息不符合规范！");
           } else {
             for (let i in this.userData) {
+              if (i === "name") {
+                getStudentsDataByParams(i, this.userData[i]).then(
+                  (res) => {
+                    const { data } = res.data;
+                    if (data.length === 0) {
+                      this.name = data;
+                    } else {
+                      if (this.curName === data[0].name) {
+                        this.name = [];
+                      } else {
+                        this.name = data;
+                      }
+                    }
+                  },
+                  (err) => {
+                    console.log("查询数据失败" + err);
+                  }
+                );
+              }
+
               if (i === "telephone") {
                 getStudentsDataByParams(i, this.userData[i]).then(
                   (res) => {
@@ -540,6 +562,17 @@ export default {
 
             setTimeout(() => {
               this.isLoading = false;
+
+              if (this.name.length === 0) {
+                this.result = true;
+              } else {
+                this.dialogFormVisible = true;
+                return this.$message({
+                  showClose: true,
+                  message: "该名字已被注册",
+                  type: "error",
+                });
+              }
 
               if (this.telephone.length === 0) {
                 this.result = true;
@@ -640,7 +673,7 @@ export default {
   width: 100%;
 }
 .el-dialog__body {
-  padding: 30px 130px;
+  padding: 30px 120px;
 }
 .el-form {
   width: 500px;

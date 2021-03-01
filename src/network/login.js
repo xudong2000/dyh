@@ -9,10 +9,10 @@ export function getStudentsDataByParams(key, value) {
 }
 
 // 导出通过姓名获取老师数据方法
-export function getTeachersDataByName(uname) {
+export function getTeachersDataByParams(key, value) {
   return request({
     method: 'get',
-    url: '/curTeacher?name=' + uname,
+    url: '/curTeacher?' + key + '=' + value,
   })
 }
 

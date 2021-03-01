@@ -102,11 +102,11 @@
 
 <script>
 import {
-  getAdminsDataByName,
-  getTeachersDataByName,
+  getTeachersDataByParams,
   getStudentsDataByParams,
 } from "../../network/login";
 import { addStudentsData } from "../../network/student";
+import { addTeachersData } from "../../network/teacher";
 import { mapState } from "vuex";
 
 export default {
@@ -134,10 +134,11 @@ export default {
     return {
       registerForm: {
         s_id: 0,
-        name: "王旭东",
-        pwd: "wxd3416",
-        checkPwd: "wxd3416",
-        telephone: "17674600290",
+        t_id: 0,
+        name: "",
+        pwd: "",
+        checkPwd: "",
+        telephone: "",
         identity: "",
       },
       registerRules: {
@@ -200,9 +201,11 @@ export default {
   created() {
     this.registerForm.identity = sessionStorage.getItem("regId");
     this.registerForm.s_id = this.stuTotal;
+    this.registerForm.t_id = this.teacTotal;
   },
   computed: {
     ...mapState("student", ["stuTotal"]),
+    ...mapState("teacher", ["teacTotal"]),
   },
   methods: {
     // 重置输入框
@@ -242,7 +245,7 @@ export default {
                 );
               }
             }
-            console.log(this.phone);
+
             setTimeout(() => {
               this.isLoading = false;
               for (let i in this.registerForm) {
@@ -252,7 +255,6 @@ export default {
                       const { data } = res.data;
                       if (data.length === 0) {
                         if (this.phone.length === 0) {
-                          console.log("未注册");
                           addStudentsData(this.registerForm).then(
                             (res) => {
                               this.resetForm();
@@ -292,6 +294,78 @@ export default {
                         this.$message({
                           showClose: true,
                           message: "该学生已被注册",
+                          type: "error",
+                        });
+                      }
+                    }
+                  );
+                }
+              }
+            }, 1000);
+          }
+
+          if (identity === "老师") {
+            for (let i in this.registerForm) {
+              if (i === "telephone") {
+                getTeachersDataByParams(i, this.registerForm[i]).then(
+                  (res) => {
+                    this.phone = res.data.data;
+                  },
+                  (err) => {
+                    console.log("查询数据失败" + err);
+                  }
+                );
+              }
+            }
+
+            setTimeout(() => {
+              this.isLoading = false;
+              for (let i in this.registerForm) {
+                if (i === "name") {
+                  getTeachersDataByParams(i, this.registerForm[i]).then(
+                    (res) => {
+                      const { data } = res.data;
+                      if (data.length === 0) {
+                        if (this.phone.length === 0) {
+                          addTeachersData(this.registerForm).then(
+                            (res) => {
+                              this.resetForm();
+                              this.$confirm(
+                                "添加老师成功，是否跳转到老师管理界面?",
+                                "提示",
+                                {
+                                  confirmButtonText: "确定",
+                                  cancelButtonText: "取消",
+                                  type: "warning",
+                                }
+                              )
+                                .then(() => {
+                                  this.$router.go(-1);
+                                })
+                                .catch(() => {
+                                  this.$message({
+                                    showClose: true,
+                                    type: "info",
+                                    message: "已取消跳转",
+                                  });
+                                });
+                            },
+                            (err) => {
+                              console.log("添加数据失败" + err);
+                            }
+                          );
+                        } else {
+                          console.log("已注册");
+                          this.$message({
+                            showClose: true,
+                            message: "该手机号已被注册",
+                            type: "error",
+                          });
+                        }
+                      } else {
+                        this.$message({
+                          showClose: true,
+                          message: "该老师已被注册",
                           type: "error",
                         });
                       }
