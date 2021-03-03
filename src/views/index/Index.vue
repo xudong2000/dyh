@@ -56,13 +56,14 @@ export default {
   name: "Index",
   data() {
     return {
+      // 默认标签页
       activeName: "first",
+      // 金牌讲师
       lecturers,
+      // 王牌专业
       specialtys,
     };
   },
-  created() {},
-  methods: {},
 };
 </script>
 
@@ -72,6 +73,11 @@ export default {
   height: 100%;
   background-color: #fff;
   padding: 20px;
+}
+
+/* 标签页 */
+.el-tab-pane {
+  padding: 0 150px;
 }
 .el-carousel__item h3 {
   color: #475669;
@@ -86,9 +92,8 @@ export default {
 .el-carousel__item:nth-child(2n + 1) {
   background-color: #d3dce6;
 }
-.el-tab-pane {
-  padding: 0 150px;
-}
+
+/* 讲师资料 */
 .profile {
   background-color: #fff;
   width: 100%;
@@ -141,6 +146,8 @@ export default {
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 10;
 }
+
+/* 专业简介 */
 .specialty {
   background-color: rgb(255, 255, 255);
   width: 100%;

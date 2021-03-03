@@ -223,6 +223,7 @@ import { updateStudentByName } from "../../../network/student";
 export default {
   name: "EditForm",
   data() {
+    // 校验用户名
     var validateName = (rule, value, callback) => {
       var name = /^[\u4e00-\u9fa5]{2,6}$/;
       var result = name.test(value);
@@ -232,6 +233,7 @@ export default {
         callback();
       }
     };
+    // 校验年龄
     var checkAge = (rule, value, callback) => {
       if (!value) {
         return callback(new Error("年龄不能为空"));
@@ -249,7 +251,7 @@ export default {
       }, 1000);
     };
     return {
-      // 保存学生编辑表单中的数据
+      // 保存编辑表单中的数据
       editForm: {
         avatar: "",
         name: "",
@@ -270,7 +272,7 @@ export default {
         signature: "",
         photo: "",
       },
-      // 学生编辑表单的规则
+      // 校验编辑表单中的数据
       editRules: {
         name: [
           { required: true, message: "请输入用户名", trigger: "blur" },
@@ -346,13 +348,13 @@ export default {
           },
         ],
       },
-      // 表单宽度
+      // 表单label宽度
       formLabelWidth: "100px",
-      // 默认高亮
+      // 默认显示的下标值
       activeNames: ["2"],
-      // 编辑
+      // 表单是否可见
       dialogFormVisible: false,
-      // 保存所有省市区
+      // 保存所有地名数据
       options: options,
       // 就业方向
       mySpecialty: [
@@ -429,10 +431,15 @@ export default {
       ],
       // 是否加载中
       isLoading: false,
+      // 姓名
       name: "",
+      // 手机号
       telephone: "",
+      // 邮箱
       email: "",
+      // QQ号
       qq: "",
+      // 微信号
       wechat: "",
       // 结果是否为true
       result: false,

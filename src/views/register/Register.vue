@@ -102,16 +102,20 @@
 
 <script>
 import {
+  getAdminsDataByParams,
   getTeachersDataByParams,
   getStudentsDataByParams,
 } from "../../network/login";
+
 import { addStudentsData } from "../../network/student";
 import { addTeachersData } from "../../network/teacher";
+
 import { mapState } from "vuex";
 
 export default {
   name: "Register",
   data() {
+    // 校验用户名
     var validateName = (rule, value, callback) => {
       var name = /^[\u4e00-\u9fa5]{2,6}$/;
       var result = name.test(value);
@@ -121,7 +125,7 @@ export default {
         callback();
       }
     };
-
+    // 校验密码
     var validatePwd = (rule, value, callback) => {
       if (value === "") {
         callback(new Error("请再次输入密码"));
@@ -132,6 +136,7 @@ export default {
       }
     };
     return {
+      // 保存用户注册的信息
       registerForm: {
         s_id: 0,
         t_id: 0,
@@ -141,6 +146,7 @@ export default {
         telephone: "",
         identity: "",
       },
+      // 注册表单校验
       registerRules: {
         name: [
           { required: true, message: "请输入用户名", trigger: "blur" },
@@ -172,6 +178,7 @@ export default {
           { required: true, message: "请选择您登录的身份", trigger: "change" },
         ],
       },
+      // 注册的身份
       options: [
         {
           value: "学生",
@@ -230,7 +237,6 @@ export default {
           this.isLoading = false;
           return this.$message.error("您提交的注册信息不符合规范！");
         } else {
-          // console.log(this.registerForm);
           const { identity } = this.registerForm;
           if (identity === "学生") {
             for (let i in this.registerForm) {
@@ -388,7 +394,6 @@ export default {
   height: 100vh;
   overflow: hidden;
   background: black;
-  /* 66BFE5 */
   background: linear-gradient(to bottom, #df628a 0%, #5788fe 100%);
 }
 

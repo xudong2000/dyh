@@ -2,10 +2,6 @@
   <div id="home" v-loading="isLoading">
     <el-container>
       <el-header>
-        <!-- <div class="logo">
-          <img src="../../assets/img/home/dyh.png" alt="" />
-        </div> -->
-
         <div class="time">
           <span>{{ time }}</span>
         </div>
@@ -17,10 +13,10 @@
             :style="{ color: id === '管理员' ? 'gold' : 'pink' }"
             >{{ userData[0].name }}</span
           >
-          <!-- <span class="identity">{{ id }}</span> -->
+          <span class="identity">{{ id }}</span>
         </div>
 
-        <div class="out" @click="out">
+        <div class="out" @click="logout">
           <span>退出登录</span>
         </div>
       </el-header>
@@ -88,6 +84,8 @@ export default {
       time: "",
       // 是否加载中
       isLoading: false,
+      // 定时器
+      timer: "",
     };
   },
   created() {
@@ -97,20 +95,19 @@ export default {
     }, 1100);
 
     this.uname = window.sessionStorage.getItem("username");
-    // console.log(this.uname);
-
-    let curUser = window.sessionStorage.getItem("curUser");
-    this.userData = JSON.parse(curUser);
-    // console.log(this.userData);
-
     this.id = window.sessionStorage.getItem("identity");
-    // console.log(this.id);
+    // let curUser = window.sessionStorage.getItem("curUser");
+    this.userData = JSON.parse(window.sessionStorage.getItem("curUser"));
 
-    setInterval(() => {
+    this.timer = setInterval(() => {
       this.getTime();
     }, 1000);
   },
+  destroyed() {
+    clearInterval(this.timer);
+  },
   methods: {
+    // 获取当前系统时间
     getTime() {
       // 获取时间
       var date = new Date();
@@ -156,10 +153,12 @@ export default {
         second;
       // console.log(this.time);
     },
+    // 折叠侧边栏
     toggle() {
       this.isCollapse = !this.isCollapse;
     },
-    out() {
+    // 处理退出登录操作
+    logout() {
       setTimeout(() => {
         this.$confirm("是否确认退出登录？", "提示", {
           confirmButtonText: "走起",
@@ -190,6 +189,7 @@ export default {
   width: 100%;
   height: calc(100vh);
 }
+
 /* 容器区域 */
 .el-container {
   width: 100%;
@@ -207,15 +207,11 @@ export default {
   background-color: #545c64;
   color: #333;
   line-height: 200px;
-  /* padding: 20px 0 0;
-    margin-top: 20px; */
 }
 .el-main {
   background-color: #e9eef3;
   color: #333;
   padding-bottom: 0 !important;
-  /* text-align: center; */
-  /* line-height: 160px; */
 }
 
 /* 头部导航栏区域 */
@@ -259,13 +255,16 @@ export default {
   vertical-align: top;
   margin-top: 10px;
 }
+
+/* 用户名 */
 .nickName {
   font-size: 20px;
-  margin-left: 10px;
+  margin: 0 10px;
   color: #fff;
 }
 .identity {
   color: #fff;
+  font-size: 12px;
 }
 
 /* 当前时间 */
@@ -290,6 +289,7 @@ export default {
   cursor: pointer;
 }
 
+/* 折叠侧边栏 */
 .toggle {
   width: 100%;
   height: 30px;

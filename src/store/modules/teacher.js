@@ -53,7 +53,6 @@ const mutations = {
     // 判断老师是否已被删除
     for (let i of data) {
       if (i.isDelete === false) {
-        // i.hometown = i.hometown.join('-')
         state.teachersData.push(i)
       } else {
         state.removeTeacData.push(i)

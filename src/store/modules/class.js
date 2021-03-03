@@ -10,6 +10,7 @@ const state = {
 const getters = {}
 
 const actions = {
+  // 获取所有班级数据
   aGetClassData({ commit }) {
     getClassData().then(
       (res) => {
@@ -23,6 +24,7 @@ const actions = {
 }
 
 const mutations = {
+  // 获取所有班级数据
   mGetClassData(state, data) {
     state.allClassData = data
     state.allClassName = []

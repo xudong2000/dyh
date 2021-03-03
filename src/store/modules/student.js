@@ -50,7 +50,6 @@ const mutations = {
     // 判断学生是否已被删除
     for (let i of data) {
       if (i.isDelete === false) {
-        // i.hometown = i.hometown.join('-')
         state.studentsData.push(i)
       } else {
         state.removeStuData.push(i)

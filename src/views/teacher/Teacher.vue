@@ -171,17 +171,20 @@
 
 <script>
 import { mapState } from "vuex";
+
 export default {
   name: "Teacher",
   data() {
     return {
+      // 默认显示的标签页
       activeName: "first",
       // 当前用户数据
       userData: "",
       // 当前用户名
       uname: "",
-      // 详情
+      // 详情页是否可见
       dialogVisible: false,
+      // 默认显示的下标值
       activeNames: ["2"],
       // 定时器
       timer: "",
@@ -191,6 +194,7 @@ export default {
   created() {
     this.uname = sessionStorage.getItem("username");
     this.$store.dispatch("teacher/aGetTeachersData");
+
     this.timer = setTimeout(() => {
       if (this.undoneNum === 0) return;
       else this.open();
@@ -229,7 +233,6 @@ export default {
     // 处理查看个人资料
     handleClick(row) {
       this.dialogVisible = true;
-      //row.hometown = row.hometown.join("");
       this.userData = row;
     },
     // 处理关闭详情框
@@ -258,7 +261,6 @@ export default {
     },
     // 处理删除操作老师
     deleteTeacher(index, rows) {
-      // console.log(rows[index]);
       this.$confirm("是否要删除该老师?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",

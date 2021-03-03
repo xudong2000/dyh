@@ -1,6 +1,7 @@
 <template>
   <div id="login">
     <canvas id="canvas"></canvas>
+
     <div class="login-box">
       <div class="login-avatar">
         <img src="../../assets/img/login/dyh.jpg" alt="" />
@@ -69,7 +70,7 @@
 
 <script>
 import {
-  getAdminsDataByName,
+  getAdminsDataByParams,
   getTeachersDataByParams,
   getStudentsDataByParams,
 } from "../../network/login";
@@ -77,6 +78,7 @@ import {
 export default {
   name: "Login",
   data() {
+    // 校验用户名
     var validateName = (rule, value, callback) => {
       var name = /^[\u4e00-\u9fa5]{2,6}$/;
       var result = name.test(value);
@@ -87,11 +89,13 @@ export default {
       }
     };
     return {
+      // 保存用户登录的信息
       loginForm: {
         username: "王旭东",
         password: "wxd3416",
         identity: "",
       },
+      // 登录表单校验
       loginRules: {
         username: [
           { required: true, message: "请输入用户名", trigger: "blur" },
@@ -110,6 +114,7 @@ export default {
           { required: true, message: "请选择您登录的身份", trigger: "change" },
         ],
       },
+      // 登录身份
       options: [
         {
           value: "学生",

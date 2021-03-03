@@ -181,6 +181,7 @@ export default {
   },
   data() {
     return {
+      // 默认显示的标签页
       activeName: "first",
       data: [
         { value: 1548, name: "幽州" },
@@ -189,13 +190,15 @@ export default {
         { value: 434, name: "益州" },
         { value: 335, name: "西凉" },
       ],
-      // 详情
+      // 详情页是否可见
       dialogVisible: false,
       // 当前用户数据
       userData: "",
       // 当前用户名
       curName: "",
+      // 默认显示的下标值
       activeNames: ["2"],
+      // 表单label宽度
       formLabelWidth: "100px",
       // 定时器
       timer: "",
@@ -329,7 +332,6 @@ export default {
     },
     // 处理删除学生操作
     deleteStudent(index, rows) {
-      // console.log(rows[index]);
       this.$confirm("是否要删除该学生?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
