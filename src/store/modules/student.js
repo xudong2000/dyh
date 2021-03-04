@@ -9,8 +9,6 @@ const state = {
   studentsData: [],
   // 保存所有已被删除的学生数据
   removeStuData: [],
-  // 保存未完善资料的学生数量
-  undoneNum: 0,
   // 学生总数
   stuTotal: 0,
 }
@@ -44,9 +42,11 @@ const actions = {
   },
 
   // 根据参数模糊查询
-  aFuzzyQueryByParams({ commit }) {
-    fuzzyQueryByParams('钟').then(
-      (res) => console.log(res),
+  aFuzzyQueryByParams({ state, commit }, uname) {
+    fuzzyQueryByParams(uname).then(
+      (res) => {
+        commit('mFuzzyQueryByParams', res.data.data)
+      },
       (err) => console.log('查询数据失败' + err)
     )
   },
@@ -57,7 +57,6 @@ const mutations = {
   mGetStudentsData(state, data) {
     state.studentsData = []
     state.removeStuData = []
-    state.undoneNum = 0
 
     // 判断学生是否已被删除
     for (let i of data) {
@@ -105,12 +104,61 @@ const mutations = {
       var time1 = date1.getFullYear() + '-' + month1 + '-' + riqi1
       // 将每个日期字符串替换成日期类型
       i.birthday = time1
-
-      if (i.startTime === '2000-01-01') {
-        state.undoneNum++
-      }
     }
     // console.log(state.studentsData)
+  },
+
+  // 根据参数模糊查询
+  mFuzzyQueryByParams(state, data) {
+    state.studentsData = []
+
+    // 判断学生是否已被删除
+    for (let i of data) {
+      if (i.isDelete === false) {
+        state.studentsData.push(i)
+      } else {
+        state.studentsData = []
+      }
+    }
+
+    // 将所有日期类型转换成年月
+    for (let i of state.studentsData) {
+      // 将字符串转换成日期类型
+      var date = new Date(Date.parse(i.startTime))
+      //月
+      var month = date.getMonth()
+      month = month + 1
+      if (month < 10) {
+        month = '0' + month
+      }
+      //日
+      var riqi = date.getDate()
+      if (riqi < 10) {
+        riqi = '0' + riqi
+      }
+      //时间的格式为：2018-01-01
+      var time = date.getFullYear() + '-' + month + '-' + riqi
+      // 将每个日期字符串替换成日期类型
+      i.startTime = time
+
+      // 将字符串转换成日期类型
+      var date1 = new Date(Date.parse(i.birthday))
+      //月
+      var month1 = date1.getMonth()
+      month1 = month1 + 1
+      if (month1 < 10) {
+        month1 = '0' + month1
+      }
+      //日
+      var riqi1 = date1.getDate()
+      if (riqi1 < 10) {
+        riqi1 = '0' + riqi1
+      }
+      //时间的格式为：2018-01-01
+      var time1 = date1.getFullYear() + '-' + month1 + '-' + riqi1
+      // 将每个日期字符串替换成日期类型
+      i.birthday = time1
+    }
   },
 }
 

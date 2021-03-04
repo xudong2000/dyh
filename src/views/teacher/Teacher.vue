@@ -5,14 +5,7 @@
       <el-tab-pane label="表格" name="first">
         <el-card class="box-card">
           <div slot="header" class="clearfix">
-            <el-button
-              style="float: right; padding: 3px 0"
-              type="text"
-              round
-              v-show="user === '管理员' ? true : false"
-              @click="addTeacher()"
-              >增加老师</el-button
-            >
+            <search :user="user" id="老师" />
           </div>
           <div class="content">
             <el-table
@@ -172,8 +165,13 @@
 <script>
 import { mapState } from "vuex";
 
+import Search from "../../components/search/Search";
+
 export default {
   name: "Teacher",
+  components: {
+    Search,
+  },
   data() {
     return {
       // 默认显示的标签页
@@ -186,43 +184,17 @@ export default {
       dialogVisible: false,
       // 默认显示的下标值
       activeNames: ["2"],
-      // 定时器
-      timer: "",
     };
   },
   props: ["user"],
   created() {
     this.uname = sessionStorage.getItem("username");
     this.$store.dispatch("teacher/aGetTeachersData");
-
-    this.timer = setTimeout(() => {
-      if (this.undoneNum === 0) return;
-      else this.open();
-    }, 2000);
-  },
-  destroyed() {
-    clearTimeout(this.timer);
   },
   computed: {
-    ...mapState("teacher", ["teachersData", "undoneNum"]),
+    ...mapState("teacher", ["teachersData"]),
   },
   methods: {
-    // 消息提示
-    open() {
-      if (this.user === "管理员") {
-        const h = this.$createElement;
-        this.$notify({
-          title: "消息通知",
-          message: h(
-            "span",
-            { style: "color: salmon" },
-            "当前还有" + this.undoneNum + "位老师的个人资料未完善"
-          ),
-        });
-      } else {
-        return;
-      }
-    },
     // 给表格指定行添加背景色
     tableRowClassName({ row, rowIndex }) {
       if (row.startTime === "2000-01-01") {
@@ -282,21 +254,6 @@ export default {
             message: "已取消删除",
           });
         });
-    },
-    // 处理添加老师操作
-    addTeacher() {
-      clearTimeout(this.timer);
-      sessionStorage.setItem("regId", "老师");
-      const loading = this.$loading({
-        lock: true,
-        text: "正在为您跳转中......",
-        spinner: "el-icon-loading",
-        background: "rgba(0, 0, 0, 0.7)",
-      });
-      setTimeout(() => {
-        loading.close();
-        this.$router.push("/register");
-      }, 1000);
     },
   },
 };

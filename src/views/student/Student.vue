@@ -5,31 +5,9 @@
       <el-tab-pane label="表格" name="first">
         <el-card class="box-card">
           <div slot="header" class="clearfix">
-            <el-form
-              :inline="true"
-              :model="formInline"
-              class="demo-form-inline"
-              style="width: 100%; height: 50px"
-            >
-              <el-form-item label="审批人">
-                <el-input
-                  v-model="formInline.user"
-                  placeholder="审批人"
-                ></el-input>
-              </el-form-item>
-              <el-form-item>
-                <el-button type="primary">查询</el-button>
-              </el-form-item>
-              <el-button
-                style="float: right; padding: 3px 0"
-                type="text"
-                round
-                v-show="user === '管理员' ? true : false"
-                @click="addStudent()"
-                >增加学生</el-button
-              >
-            </el-form>
+            <search :user="user" id="学生" />
           </div>
+
           <div class="content">
             <el-table
               :data="studentsData"
@@ -190,10 +168,13 @@ import { mapState } from "vuex";
 
 import EditForm from "./child/EditForm";
 
+import Search from "../../components/search/Search";
+
 export default {
   name: "Student",
   components: {
     EditForm,
+    Search,
   },
   data() {
     return {
@@ -206,9 +187,6 @@ export default {
         { value: 434, name: "益州" },
         { value: 335, name: "西凉" },
       ],
-      formInline: {
-        user: "",
-      },
       // 详情页是否可见
       dialogVisible: false,
       // 当前用户数据
@@ -219,8 +197,6 @@ export default {
       activeNames: ["2"],
       // 表单label宽度
       formLabelWidth: "100px",
-      // 定时器
-      timer: "",
       // 当前用户名
       uname: "",
     };
@@ -229,11 +205,6 @@ export default {
   created() {
     this.uname = sessionStorage.getItem("username");
     this.$store.dispatch("student/aGetStudentsData");
-    // this.$store.dispatch("student/aFuzzyQueryByParams");
-    this.timer = setTimeout(() => {
-      if (this.undoneNum === 0) return;
-      else this.open();
-    }, 2000);
   },
   // mounted() {
   //   var ROOT_PATH =
@@ -290,29 +261,10 @@ export default {
 
   //   option && myChart.setOption(option);
   // },
-  destroyed() {
-    clearTimeout(this.timer);
-  },
   computed: {
-    ...mapState("student", ["studentsData", "undoneNum"]),
+    ...mapState("student", ["studentsData"]),
   },
   methods: {
-    // 消息提示
-    open() {
-      if (this.user === "管理员") {
-        const h = this.$createElement;
-        this.$notify({
-          title: "消息通知",
-          message: h(
-            "span",
-            { style: "color: salmon" },
-            "当前还有" + this.undoneNum + "位同学的个人资料未完善"
-          ),
-        });
-      } else {
-        return;
-      }
-    },
     // 给表格指定行添加背景色
     tableRowClassName({ row, rowIndex }) {
       if (row.startTime === "2000-01-01") {
@@ -374,21 +326,6 @@ export default {
           });
         });
     },
-    // 处理添加学生操作
-    addStudent() {
-      clearTimeout(this.timer);
-      sessionStorage.setItem("regId", "学生");
-      const loading = this.$loading({
-        lock: true,
-        text: "正在为您跳转中......",
-        spinner: "el-icon-loading",
-        background: "rgba(0, 0, 0, 0.7)",
-      });
-      setTimeout(() => {
-        loading.close();
-        this.$router.push("/register");
-      }, 1000);
-    },
   },
 };
 </script>
@@ -405,6 +342,10 @@ export default {
 }
 .box-card {
   box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
+}
+.el-card__header {
+  padding: 20px 20px;
+  height: 80px;
 }
 .clearfix {
   height: 30px !important;

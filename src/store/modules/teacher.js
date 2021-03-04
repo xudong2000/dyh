@@ -7,8 +7,6 @@ const state = {
   teachersName: [],
   // 保存所有已被删除的老师数据
   removeTeacData: [],
-  // 保存未完善资料的老师数量
-  undoneNum: 0,
   // 老师总数
   teacTotal: 0,
 }
@@ -48,7 +46,6 @@ const mutations = {
     state.teachersData = []
     state.removeTeacData = []
     state.teachersName = []
-    state.undoneNum = 0
 
     // 判断老师是否已被删除
     for (let i of data) {
@@ -104,10 +101,6 @@ const mutations = {
       var time1 = date1.getFullYear() + '-' + month1 + '-' + riqi1
       // 将每个日期字符串替换成日期类型
       i.birthday = time1
-
-      if (i.startTime === '2000-01-01') {
-        state.undoneNum++
-      }
     }
     // console.log(state.teachersData)
   },
