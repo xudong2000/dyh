@@ -17,9 +17,9 @@ export function getTeachersDataByParams(key, value) {
 }
 
 // 导出通过姓名获取管理员数据方法
-export function getAdminsDataByName(uname) {
+export function getAdminsDataByParams(key,value) {
   return request({
     method: 'get',
-    url: '/curAdmin?name=' + uname,
+    url: '/curAdmin?' + key + '=' + value,
   })
 }

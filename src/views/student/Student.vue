@@ -5,14 +5,30 @@
       <el-tab-pane label="表格" name="first">
         <el-card class="box-card">
           <div slot="header" class="clearfix">
-            <el-button
-              style="float: right; padding: 3px 0"
-              type="text"
-              round
-              v-show="user === '管理员' ? true : false"
-              @click="addStudent()"
-              >增加学生</el-button
+            <el-form
+              :inline="true"
+              :model="formInline"
+              class="demo-form-inline"
+              style="width: 100%; height: 50px"
             >
+              <el-form-item label="审批人">
+                <el-input
+                  v-model="formInline.user"
+                  placeholder="审批人"
+                ></el-input>
+              </el-form-item>
+              <el-form-item>
+                <el-button type="primary">查询</el-button>
+              </el-form-item>
+              <el-button
+                style="float: right; padding: 3px 0"
+                type="text"
+                round
+                v-show="user === '管理员' ? true : false"
+                @click="addStudent()"
+                >增加学生</el-button
+              >
+            </el-form>
           </div>
           <div class="content">
             <el-table
@@ -190,6 +206,9 @@ export default {
         { value: 434, name: "益州" },
         { value: 335, name: "西凉" },
       ],
+      formInline: {
+        user: "",
+      },
       // 详情页是否可见
       dialogVisible: false,
       // 当前用户数据
@@ -210,6 +229,7 @@ export default {
   created() {
     this.uname = sessionStorage.getItem("username");
     this.$store.dispatch("student/aGetStudentsData");
+    // this.$store.dispatch("student/aFuzzyQueryByParams");
     this.timer = setTimeout(() => {
       if (this.undoneNum === 0) return;
       else this.open();

@@ -358,7 +358,7 @@ export default {
           if (identity === "管理员") {
             setTimeout(() => {
               this.isLoading = false;
-              getAdminsDataByName(username).then((res) => {
+              getAdminsDataByParams("name", username).then((res) => {
                 const { data } = res.data;
                 if (data.length === 0) {
                   this.$message({

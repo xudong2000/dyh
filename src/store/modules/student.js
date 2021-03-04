@@ -1,4 +1,8 @@
-import { getStudentsData, deleStudentByName } from '../../network/student'
+import {
+  getStudentsData,
+  deleStudentByName,
+  fuzzyQueryByParams,
+} from '../../network/student'
 
 const state = {
   // 保存所有学生数据
@@ -36,6 +40,14 @@ const actions = {
       (err) => {
         console.log('删除数据失败' + err)
       }
+    )
+  },
+
+  // 根据参数模糊查询
+  aFuzzyQueryByParams({ commit }) {
+    fuzzyQueryByParams('钟').then(
+      (res) => console.log(res),
+      (err) => console.log('查询数据失败' + err)
     )
   },
 }
