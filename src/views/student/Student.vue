@@ -191,13 +191,13 @@ export default {
       dialogVisible: false,
       // 当前用户数据
       userData: "",
-      // 当前用户名
+      // 当前编辑的用户名
       curName: "",
       // 默认显示的下标值
       activeNames: ["2"],
       // 表单label宽度
       formLabelWidth: "100px",
-      // 当前用户名
+      // 当前登录的用户名
       uname: "",
     };
   },

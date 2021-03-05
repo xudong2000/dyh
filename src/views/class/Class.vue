@@ -5,6 +5,10 @@
 <script>
 export default {
   name: "Class",
+  created() {
+    this.$store.dispatch("email/aGetEmailData");
+  },
+  methods: {},
 };
 </script>
 

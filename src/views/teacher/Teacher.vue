@@ -35,7 +35,7 @@
               </el-table-column>
               <el-table-column prop="salary" label="月薪" width="100">
               </el-table-column>
-              <el-table-column prop="address" label="住址" width="100">
+              <el-table-column prop="address" label="住址" width="120">
               </el-table-column>
               <el-table-column fixed="right" label="操作" width="150">
                 <template slot-scope="scope">
@@ -159,17 +159,22 @@
         <el-button type="primary" @click="handleClose">确 定</el-button>
       </span>
     </el-dialog>
+
+    <edit-form ref="edit" :userData="userData" :curName="curName" />
   </div>
 </template>
 
 <script>
 import { mapState } from "vuex";
 
+import EditForm from "./child/EditForm";
+
 import Search from "../../components/search/Search";
 
 export default {
   name: "Teacher",
   components: {
+    EditForm,
     Search,
   },
   data() {
@@ -178,7 +183,9 @@ export default {
       activeName: "first",
       // 当前用户数据
       userData: "",
-      // 当前用户名
+      // 当前编辑的用户名
+      curName: "",
+      // 当前登录的用户名
       uname: "",
       // 详情页是否可见
       dialogVisible: false,
@@ -216,20 +223,18 @@ export default {
         })
         .catch((_) => {});
     },
-    // 处理编辑学生数据
+    // 处理编辑老师数据
     editTeacher(row) {
       this.$refs.edit.dialogFormVisible = true;
       for (let i in row) {
         if (Number.isInteger(row[i])) {
-          if (i === "telephone" || i === "qq") {
+          if (i === "telephone" || i === "qq" || i === "salary") {
             row[i] = row[i] + "";
           }
         }
       }
       this.userData = row;
       this.curName = row.name;
-      this.$store.dispatch("team/aGetClassData");
-      this.$store.dispatch("teacher/aGetTeachersData");
     },
     // 处理删除操作老师
     deleteTeacher(index, rows) {

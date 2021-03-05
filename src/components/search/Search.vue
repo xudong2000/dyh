@@ -7,11 +7,20 @@
       style="width: 100%; height: 50px"
     >
       <el-form-item style="margin-left: 50%">
-        <el-input v-model="uname" placeholder="请输入姓名" clearable></el-input>
+        <el-input
+          v-show="id === '学生'"
+          v-model="s_name"
+          placeholder="请输入要查询的姓名"
+          clearable
+        ></el-input>
+        <el-input
+          v-show="id === '老师'"
+          v-model="t_name"
+          placeholder="请输入要查询的姓名"
+          clearable
+        ></el-input>
       </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="fuzzyQuery">查询</el-button>
-      </el-form-item>
+
       <el-button
         style="float: right; padding: 3px 0"
         type="text"
@@ -29,7 +38,8 @@ export default {
   name: "Search",
   data() {
     return {
-      uname: "",
+      s_name: "",
+      t_name: "",
     };
   },
   props: ["user", "id"],
@@ -52,7 +62,7 @@ export default {
     // 模糊查询
     fuzzyQuery() {
       if (this.uname !== "") {
-        this.$store.dispatch("student/aFuzzyQueryByParams", this.uname);
+        this.$store.dispatch("student/aFuzzyQueryByName", this.uname);
       } else {
         return this.$message({
           showClose: true,
@@ -63,18 +73,20 @@ export default {
     },
   },
   watch: {
-    // 监听用户输入的姓名
-    uname(newValue, oldValue) {
-      if (this.id === "学生") {
-        if (newValue !== "") {
-          this.$store.dispatch("student/aFuzzyQueryByParams", newValue);
-        } else {
-          this.$store.dispatch("student/aGetStudentsData");
-        }
+    // 监听用户输入的学生姓名
+    s_name(newValue, oldValue) {
+      if (newValue !== "") {
+        this.$store.dispatch("student/aFuzzyQueryByName", newValue);
+      } else {
+        this.$store.dispatch("student/aGetStudentsData");
       }
-
-      if (this.id === "老师") {
-        console.log(newValue);
+    },
+    // 监听用户输入的老师姓名
+    t_name(newValue, oldValue) {
+      if (newValue !== "") {
+        this.$store.dispatch("teacher/aFuzzyQueryByName", newValue);
+      } else {
+        this.$store.dispatch("teacher/aGetTeachersData");
       }
     },
   },

@@ -1,7 +1,7 @@
 import {
   getStudentsData,
   deleStudentByName,
-  fuzzyQueryByParams,
+  fuzzyQueryByName,
 } from '../../network/student'
 
 const state = {
@@ -41,11 +41,11 @@ const actions = {
     )
   },
 
-  // 根据参数模糊查询
-  aFuzzyQueryByParams({ state, commit }, uname) {
-    fuzzyQueryByParams(uname).then(
+  // 根据名字模糊查询
+  aFuzzyQueryByName({ state, commit }, uname) {
+    fuzzyQueryByName(uname).then(
       (res) => {
-        commit('mFuzzyQueryByParams', res.data.data)
+        commit('mFuzzyQueryByName', res.data.data)
       },
       (err) => console.log('查询数据失败' + err)
     )
@@ -108,8 +108,8 @@ const mutations = {
     // console.log(state.studentsData)
   },
 
-  // 根据参数模糊查询
-  mFuzzyQueryByParams(state, data) {
+  // 根据名字模糊查询
+  mFuzzyQueryByName(state, data) {
     state.studentsData = []
 
     // 判断学生是否已被删除

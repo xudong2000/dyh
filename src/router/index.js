@@ -3,6 +3,8 @@ import VueRouter from 'vue-router'
 
 const Login = () => import('../views/login/Login.vue')
 
+const Email = () => import('../views/email/Email.vue')
+
 const Register = () => import('../views/register/Register.vue')
 
 const Home = () => import('../views/home/Home.vue')
@@ -22,6 +24,10 @@ const routes = [
   {
     path: '/login',
     component: Login,
+  },
+  {
+    path: '/email',
+    component: Email,
   },
   {
     path: '/register',

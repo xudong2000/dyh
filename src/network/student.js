@@ -34,8 +34,8 @@ export function updateStudentByName([uname, data]) {
   })
 }
 
-// 导出根据参数模糊查询
-export function fuzzyQueryByParams(uname) {
+// 导出根据名字模糊查询
+export function fuzzyQueryByName(uname) {
   return request({
     method: 'post',
     url: '/fuzzyStudent',

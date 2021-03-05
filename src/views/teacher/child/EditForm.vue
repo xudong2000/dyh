@@ -1,7 +1,7 @@
 <template>
   <div id="edit-form">
     <el-dialog
-      title="编辑学生个人资料"
+      title="编辑老师个人资料"
       :visible.sync="dialogFormVisible"
       :before-close="handleClose"
       width="70%"
@@ -16,19 +16,19 @@
         </el-form-item>
 
         <el-form-item
-          label="学生姓名"
+          label="老师姓名"
           prop="name"
           :label-width="formLabelWidth"
         >
           <el-input v-model="userData.name" autocomplete="off"></el-input>
         </el-form-item>
 
-        <el-form-item label="学生性别" prop="sex" :label-width="formLabelWidth">
+        <el-form-item label="老师性别" prop="sex" :label-width="formLabelWidth">
           <el-radio v-model="userData.sex" label="男">男</el-radio>
           <el-radio v-model="userData.sex" label="女">女</el-radio>
         </el-form-item>
 
-        <el-form-item label="学生年龄" prop="age" :label-width="formLabelWidth">
+        <el-form-item label="老师年龄" prop="age" :label-width="formLabelWidth">
           <el-input v-model.number="userData.age" autocomplete="off"></el-input>
         </el-form-item>
 
@@ -58,7 +58,7 @@
         </el-form-item>
 
         <el-form-item
-          label="入学日期"
+          label="入职日期"
           prop="startTime"
           :label-width="formLabelWidth"
         >
@@ -70,58 +70,10 @@
           </el-date-picker>
         </el-form-item>
 
-        <el-form-item
-          label="就业方向"
-          prop="specialty"
-          :label-width="formLabelWidth"
-        >
-          <el-select v-model="userData.specialty" placeholder="请选择">
-            <el-option
-              v-for="item in mySpecialty"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            >
-            </el-option>
-          </el-select>
-        </el-form-item>
-
-        <el-form-item
-          label="宿舍号"
-          prop="dormitory"
-          :label-width="formLabelWidth"
-        >
-          <el-select v-model="userData.dormitory" placeholder="请选择">
-            <el-option
-              v-for="item in myDormitory"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            >
-            </el-option>
-          </el-select>
-        </el-form-item>
-
-        <el-form-item
-          label="所在班级"
-          prop="c_id"
-          :label-width="formLabelWidth"
-        >
-          <el-select v-model="userData.c_id" placeholder="请选择">
-            <el-option
-              v-for="item in allClassName"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            >
-            </el-option>
-          </el-select>
-        </el-form-item>
-
-        <el-form-item label="班里职位" prop="job" :label-width="formLabelWidth">
+        <el-form-item label="职位" prop="job" :label-width="formLabelWidth">
           <el-select v-model="userData.job" placeholder="请选择">
             <el-option
-              v-for="item in myJob"
+              v-for="item in jobs"
               :key="item.value"
               :label="item.label"
               :value="item.value"
@@ -131,19 +83,55 @@
         </el-form-item>
 
         <el-form-item
-          label="班主任"
-          prop="classTeacher"
+          label="所教专业"
+          prop="course"
           :label-width="formLabelWidth"
         >
-          <el-select v-model="userData.classTeacher" placeholder="请选择">
+          <el-select v-model="userData.course" placeholder="请选择">
             <el-option
-              v-for="item in teachersName"
+              v-for="item in specialtys"
               :key="item.value"
               :label="item.label"
               :value="item.value"
             >
             </el-option>
           </el-select>
+        </el-form-item>
+
+        <el-form-item
+          label="学历"
+          prop="education"
+          :label-width="formLabelWidth"
+        >
+          <el-select v-model="userData.education" placeholder="请选择">
+            <el-option
+              v-for="item in educations"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            >
+            </el-option>
+          </el-select>
+        </el-form-item>
+
+        <el-form-item
+          label="毕业院校"
+          prop="school"
+          :label-width="formLabelWidth"
+        >
+          <el-input v-model="userData.school" autocomplete="off"></el-input>
+        </el-form-item>
+
+        <el-form-item label="月薪" prop="salary" :label-width="formLabelWidth">
+          <el-input v-model="userData.salary" autocomplete="off"></el-input>
+        </el-form-item>
+
+        <el-form-item
+          label="现居地址"
+          prop="address"
+          :label-width="formLabelWidth"
+        >
+          <el-input v-model="userData.address" autocomplete="off"></el-input>
         </el-form-item>
 
         <el-collapse v-model="activeNames" style="margin-bottom: 10px">
@@ -216,9 +204,8 @@
 
 <script>
 import { options } from "../../../common/address";
-import { mapState } from "vuex";
-import { getStudentsDataByParams } from "../../../network/login";
-import { updateStudentByName } from "../../../network/student";
+import { getTeachersDataByParams } from "../../../network/login";
+import { updateTeacherByName } from "../../../network/teacher";
 
 export default {
   name: "EditForm",
@@ -242,8 +229,8 @@ export default {
         if (!Number.isInteger(value)) {
           callback(new Error("请输入整数数值"));
         } else {
-          if (value < 16 || value > 24) {
-            callback(new Error("请输入16-24岁范围内的年龄"));
+          if (value < 20 || value > 50) {
+            callback(new Error("请输入20-50岁范围内的年龄"));
           } else {
             callback();
           }
@@ -260,11 +247,7 @@ export default {
         hometown: "",
         birthday: "",
         startTime: "",
-        specialty: "",
-        dormitory: "",
-        c_id: "",
         job: "",
-        classTeacher: "",
         telephone: "",
         email: "",
         qq: "",
@@ -280,36 +263,41 @@ export default {
         ],
         age: [{ required: true, validator: checkAge, trigger: "blur" }],
         hometown: [
-          { required: true, message: "请选择你的户籍地址", trigger: "change" },
+          { required: true, message: "请选择您的户籍地址", trigger: "change" },
         ],
         birthday: [
-          { required: true, message: "请选择你的出生日期", trigger: "change" },
+          { required: true, message: "请选择您的出生日期", trigger: "change" },
         ],
         startTime: [
-          { required: true, message: "请选择你的入学时间", trigger: "change" },
-        ],
-        specialty: [
-          { required: true, message: "请输入你的就业方向", trigger: "change" },
-        ],
-        dormitory: [
-          { required: true, message: "请输入你的宿舍号", trigger: "change" },
-        ],
-        c_id: [
-          { required: true, message: "请输入你所在的班级", trigger: "change" },
+          { required: true, message: "请选择您的入职时间", trigger: "change" },
         ],
         job: [
           {
             required: true,
-            message: "请输入你在班里的职位",
+            message: "请输入您的职位",
             trigger: "change",
           },
         ],
-        classTeacher: [
+        course: [
+          { required: true, message: "请选择您所教的专业", trigger: "change" },
+        ],
+        education: [
+          { required: true, message: "请选择您的学历", trigger: "change" },
+        ],
+        school: [
+          { required: true, message: "请选择您的毕业院校", trigger: "change" },
+        ],
+        salary: [
+          { required: true, message: "请选择您的月薪", trigger: "blur" },
           {
-            required: true,
-            message: "请输入你的班主任姓名",
-            trigger: "change",
+            min: 4,
+            max: 5,
+            message: "请输入四位数到五位数之间的数值",
+            trigger: "blur",
           },
+        ],
+        address: [
+          { required: true, message: "请选择您的现居地址", trigger: "change" },
         ],
         telephone: [
           { required: true, message: "请输入手机号", trigger: "blur" },
@@ -321,7 +309,7 @@ export default {
           },
         ],
         email: [
-          { required: true, message: "请输入你的QQ邮箱", trigger: "blur" },
+          { required: true, message: "请输入您的QQ邮箱", trigger: "blur" },
           {
             min: 15,
             max: 17,
@@ -330,7 +318,7 @@ export default {
           },
         ],
         qq: [
-          { required: true, message: "请输入你的QQ号", trigger: "blur" },
+          { required: true, message: "请输入您的QQ号", trigger: "blur" },
           {
             min: 8,
             max: 10,
@@ -339,7 +327,7 @@ export default {
           },
         ],
         wechat: [
-          { required: true, message: "请输入你的微信号", trigger: "blur" },
+          { required: true, message: "请输入您的微信号", trigger: "blur" },
           {
             min: 6,
             max: 20,
@@ -348,16 +336,39 @@ export default {
           },
         ],
       },
-      // 表单label宽度
-      formLabelWidth: "100px",
-      // 默认显示的下标值
-      activeNames: ["2"],
-      // 表单是否可见
-      dialogFormVisible: false,
-      // 保存所有地名数据
-      options: options,
-      // 就业方向
-      mySpecialty: [
+      // 职位
+      jobs: [
+        {
+          value: "英语老师",
+          label: "英语老师",
+        },
+        {
+          value: "Java讲师",
+          label: "Java讲师",
+        },
+        {
+          value: "前端讲师",
+          label: "前端讲师",
+        },
+        {
+          value: "UI讲师",
+          label: "UI讲师",
+        },
+        {
+          value: "礼仪老师",
+          label: "礼仪老师",
+        },
+        {
+          value: "体育老师",
+          label: "体育老师",
+        },
+        {
+          value: "其他老师",
+          label: "其他老师",
+        },
+      ],
+      // 专业
+      specialtys: [
         {
           value: "web前端",
           label: "web前端",
@@ -387,60 +398,45 @@ export default {
           label: "其他专业",
         },
       ],
-      // 宿舍号
-      myDormitory: [
+      // 学历
+      educations: [
         {
-          value: "1010",
-          label: "1010",
+          value: "初中",
+          label: "初中",
         },
         {
-          value: "1011",
-          label: "1011",
+          value: "高中",
+          label: "高中",
         },
         {
-          value: "1012",
-          label: "1012",
+          value: "中专",
+          label: "中专",
         },
         {
-          value: "1013",
-          label: "1013",
+          value: "大专",
+          label: "大专",
         },
         {
-          value: "1014",
-          label: "1014",
+          value: "本科",
+          label: "本科",
         },
         {
-          value: "其他宿舍",
-          label: "其他宿舍",
-        },
-      ],
-      // 班级职位
-      myJob: [
-        {
-          value: "学生",
-          label: "学生",
+          value: "硕士",
+          label: "硕士",
         },
         {
-          value: "班长",
-          label: "班长",
-        },
-        {
-          value: "副班长",
-          label: "副班长",
-        },
-        {
-          value: "学习委员",
-          label: "学习委员",
-        },
-        {
-          value: "体育委员",
-          label: "体育委员",
-        },
-        {
-          value: "其他",
-          label: "其他",
+          value: "研究生",
+          label: "研究生",
         },
       ],
+      // 表单label宽度
+      formLabelWidth: "100px",
+      // 默认显示的下标值
+      activeNames: ["2"],
+      // 表单是否可见
+      dialogFormVisible: false,
+      // 保存所有地名数据
+      options: options,
       // 是否加载中
       isLoading: false,
       // 姓名
@@ -458,10 +454,6 @@ export default {
     };
   },
   props: ["userData", "curName"],
-  computed: {
-    ...mapState("team", ["allClassName"]),
-    ...mapState("teacher", ["teachersName"]),
-  },
   methods: {
     // 确认修改
     modify() {
@@ -479,7 +471,7 @@ export default {
           } else {
             for (let i in this.userData) {
               if (i === "name") {
-                getStudentsDataByParams(i, this.userData[i]).then(
+                getTeachersDataByParams(i, this.userData[i]).then(
                   (res) => {
                     const { data } = res.data;
                     if (data.length === 0) {
@@ -499,7 +491,7 @@ export default {
               }
 
               if (i === "telephone") {
-                getStudentsDataByParams(i, this.userData[i]).then(
+                getTeachersDataByParams(i, this.userData[i]).then(
                   (res) => {
                     const { data } = res.data;
                     if (data.length === 0) {
@@ -519,7 +511,7 @@ export default {
               }
 
               if (i === "email") {
-                getStudentsDataByParams(i, this.userData[i]).then(
+                getTeachersDataByParams(i, this.userData[i]).then(
                   (res) => {
                     const { data } = res.data;
                     if (data.length === 0) {
@@ -539,7 +531,7 @@ export default {
               }
 
               if (i === "qq") {
-                getStudentsDataByParams(i, this.userData[i]).then(
+                getTeachersDataByParams(i, this.userData[i]).then(
                   (res) => {
                     const { data } = res.data;
                     if (data.length === 0) {
@@ -559,7 +551,7 @@ export default {
               }
 
               if (i === "wechat") {
-                getStudentsDataByParams(i, this.userData[i]).then(
+                getTeachersDataByParams(i, this.userData[i]).then(
                   (res) => {
                     const { data } = res.data;
                     if (data.length === 0) {
@@ -639,7 +631,7 @@ export default {
 
               if (this.result) {
                 this.dialogFormVisible = false;
-                updateStudentByName([this.curName, this.userData]).then(
+                updateTeacherByName([this.curName, this.userData]).then(
                   (res) => {
                     // console.log(res);
                   },
@@ -647,7 +639,7 @@ export default {
                     console.log("修改数据失败" + err);
                   }
                 );
-                this.$store.dispatch("student/aGetStudentsData");
+                this.$store.dispatch("teacher/aGetTeachersData");
                 this.$message({
                   showClose: true,
                   message: "修改成功",
@@ -673,7 +665,7 @@ export default {
       })
         .then(() => {
           this.dialogFormVisible = false;
-          this.$store.dispatch("student/aGetStudentsData");
+          this.$store.dispatch("teacher/aGetTeachersData");
           this.$message({
             type: "warning",
             message: "已取消修改！",
