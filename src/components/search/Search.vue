@@ -6,20 +6,33 @@
       class="demo-form-inline"
       style="width: 100%; height: 50px"
     >
-      <el-form-item style="margin-left: 50%">
+      <el-form-item style="margin-left: 40%">
         <el-input
           v-show="id === '学生'"
           v-model="s_name"
-          placeholder="请输入要查询的姓名"
+          placeholder="请输入要查询的学生姓名"
           clearable
         ></el-input>
+
         <el-input
           v-show="id === '老师'"
           v-model="t_name"
-          placeholder="请输入要查询的姓名"
+          placeholder="请输入要查询的老师姓名"
           clearable
         ></el-input>
+
+        <el-input
+          v-show="id === '班级'"
+          v-model="c_name"
+          placeholder="请输入要查询的班级号 如：G02班"
+          clearable
+          style="width: 260px"
+        ></el-input>
       </el-form-item>
+
+      <el-button type="primary" v-show="id === '班级'" @click="fuzzyQuery"
+        >确 定</el-button
+      >
 
       <el-button
         style="float: right; padding: 3px 0"
@@ -40,6 +53,7 @@ export default {
     return {
       s_name: "",
       t_name: "",
+      c_name: "",
     };
   },
   props: ["user", "id"],
@@ -61,8 +75,8 @@ export default {
     },
     // 模糊查询
     fuzzyQuery() {
-      if (this.uname !== "") {
-        this.$store.dispatch("student/aFuzzyQueryByName", this.uname);
+      if (this.c_name !== "") {
+        this.$store.dispatch("student/aFindStudentByClass", this.c_name);
       } else {
         return this.$message({
           showClose: true,
@@ -81,6 +95,7 @@ export default {
         this.$store.dispatch("student/aGetStudentsData");
       }
     },
+
     // 监听用户输入的老师姓名
     t_name(newValue, oldValue) {
       if (newValue !== "") {
@@ -88,6 +103,12 @@ export default {
       } else {
         this.$store.dispatch("teacher/aGetTeachersData");
       }
+    },
+
+    // 监听用户输入的班级号
+    c_name(newValue, oldValue) {
+      if (newValue === "") this.$store.dispatch("student/aGetStudentsData");
+      else return;
     },
   },
 };

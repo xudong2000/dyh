@@ -170,6 +170,7 @@ const mutations = {
       // 将每个日期字符串替换成日期类型
       i.birthday = time1
     }
+    console.log(state.teachersData)
   },
 }
 

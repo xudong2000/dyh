@@ -98,7 +98,7 @@ export default {
     this.id = window.sessionStorage.getItem("identity");
     // let curUser = window.sessionStorage.getItem("curUser");
     this.userData = JSON.parse(window.sessionStorage.getItem("curUser"));
-
+    // console.log(this.userData);
     this.timer = setInterval(() => {
       this.getTime();
     }, 1000);

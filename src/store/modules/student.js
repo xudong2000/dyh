@@ -11,6 +11,8 @@ const state = {
   removeStuData: [],
   // 学生总数
   stuTotal: 0,
+  // 当前班级的学生
+  classStudent: [],
 }
 
 const getters = {}
@@ -50,6 +52,11 @@ const actions = {
       (err) => console.log('查询数据失败' + err)
     )
   },
+
+  // 根据班级号查询对应学生
+  aFindStudentByClass({ state, commit }, c_id) {
+    commit('mFindStudentByClass', c_id)
+  },
 }
 
 const mutations = {
@@ -66,7 +73,6 @@ const mutations = {
         state.removeStuData.push(i)
       }
     }
-
     // 将所有日期类型转换成年月
     for (let i of state.studentsData) {
       // 将字符串转换成日期类型
@@ -105,6 +111,7 @@ const mutations = {
       // 将每个日期字符串替换成日期类型
       i.birthday = time1
     }
+    state.classStudent = state.studentsData
     // console.log(state.studentsData)
   },
 
@@ -158,6 +165,18 @@ const mutations = {
       var time1 = date1.getFullYear() + '-' + month1 + '-' + riqi1
       // 将每个日期字符串替换成日期类型
       i.birthday = time1
+    }
+  },
+
+  // 根据班级号查询对应学生
+  mFindStudentByClass(state, c_id) {
+    console.log(c_id)
+    state.classStudent = []
+    for (let i of state.studentsData) {
+      if (i.c_id === c_id) {
+        state.classStudent.push(i)
+      }
+      // state.studentsData = state.classStudent
     }
   },
 }

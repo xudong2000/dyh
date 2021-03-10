@@ -2,23 +2,31 @@
   <div id="index">
     <el-tabs v-model="activeName">
       <el-tab-pane label="金牌讲师" name="first">
-        <el-carousel :interval="4000" type="card" height="500px">
-          <el-carousel-item v-for="item in lecturers" :key="item.id">
+        <el-carousel
+          :interval="4000"
+          type="card"
+          height="500px"
+          :autoplay="false"
+        >
+          <el-carousel-item v-for="item in teachersData" :key="item.t_id">
             <div class="profile">
               <div class="avatar">
                 <img :src="item.avatar" alt="" />
               </div>
               <div class="nickName">
                 <span>{{ item.name }}</span>
-                <span>{{ item.teachSpecialty }}</span>
+                <span>{{ item.course }}</span>
               </div>
               <div class="school">
                 <span>{{ item.school }}</span>
-                <span>{{ item.learnSpecialty }}</span>
+                <span>{{ item.major }}</span>
                 <span>{{ item.education }}</span>
               </div>
               <div class="information">
-                <span>{{ item.information }}</span>
+                <span>{{ item.intro }}</span>
+              </div>
+              <div class="totalNum">
+                <span>已教学生人数：{{ stuNumber }}人</span>
               </div>
             </div>
           </el-carousel-item>
@@ -39,7 +47,7 @@
                 <span>{{ item.intro }}</span>
               </div>
               <div class="totalNum">
-                <span>专业所学人数：99人</span>
+                <span>专业所学人数：{{ item.number }}人</span>
               </div>
             </div>
           </el-carousel-item>
@@ -52,6 +60,8 @@
 <script>
 import { lecturers, specialtys } from "../../common/index";
 
+import { mapState } from "vuex";
+
 export default {
   name: "Index",
   data() {
@@ -62,7 +72,32 @@ export default {
       lecturers,
       // 王牌专业
       specialtys,
+      // 已教学生人数
+      stuNumber: 0,
     };
+  },
+  created() {
+    // for (let i of this.studentsData) {
+    //   for (let j of this.teachersData) {
+    //     if (i.classTeacher === j.name) {
+    //       j.stuNum.push(i.name);
+    //     }
+    //   }
+    // }
+
+    this.$store.dispatch("teacher/aGetTeachersData");
+
+    for (let i of this.studentsData) {
+      for (let j of this.specialtys) {
+        if (i.specialty === j.name) {
+          j.number++;
+        }
+      }
+    }
+  },
+  computed: {
+    ...mapState("teacher", ["teachersData"]),
+    ...mapState("student", ["studentsData"]),
   },
 };
 </script>
@@ -145,6 +180,7 @@ export default {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 10;
+  margin-bottom: 25px;
 }
 
 /* 专业简介 */
@@ -191,5 +227,6 @@ export default {
   font-size: 14px;
   line-height: 30px;
   padding: 0 5px;
+  float: left;
 }
 </style>

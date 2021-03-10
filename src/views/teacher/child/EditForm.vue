@@ -239,22 +239,7 @@ export default {
     };
     return {
       // 保存编辑表单中的数据
-      editForm: {
-        avatar: "",
-        name: "",
-        sex: "男",
-        age: "",
-        hometown: "",
-        birthday: "",
-        startTime: "",
-        job: "",
-        telephone: "",
-        email: "",
-        qq: "",
-        wechat: "",
-        signature: "",
-        photo: "",
-      },
+      editForm: {},
       // 校验编辑表单中的数据
       editRules: {
         name: [
@@ -339,32 +324,32 @@ export default {
       // 职位
       jobs: [
         {
-          value: "英语老师",
-          label: "英语老师",
+          value: "计算机英语老师",
+          label: "计算机英语老师",
         },
         {
-          value: "Java讲师",
-          label: "Java讲师",
+          value: "Java高级讲师",
+          label: "Java高级讲师",
         },
         {
-          value: "前端讲师",
-          label: "前端讲师",
+          value: "web前端讲师",
+          label: "web前端讲师",
         },
         {
-          value: "UI讲师",
-          label: "UI讲师",
+          value: "UI设计讲师",
+          label: "UI设计讲师",
         },
         {
-          value: "礼仪老师",
-          label: "礼仪老师",
+          value: "运维测试讲师",
+          label: "运维测试讲师",
         },
         {
-          value: "体育老师",
-          label: "体育老师",
+          value: "嵌入式讲师",
+          label: "嵌入式讲师",
         },
         {
-          value: "其他老师",
-          label: "其他老师",
+          value: "其他讲师",
+          label: "其他讲师",
         },
       ],
       // 专业
@@ -382,16 +367,16 @@ export default {
           label: "UI设计",
         },
         {
-          value: "软件测试",
-          label: "软件测试",
-        },
-        {
-          value: "运维实施",
-          label: "运维实施",
+          value: "运维测试",
+          label: "运维测试",
         },
         {
           value: "嵌入式",
           label: "嵌入式",
+        },
+        {
+          value: "计算机英语",
+          label: "计算机英语",
         },
         {
           value: "其他专业",

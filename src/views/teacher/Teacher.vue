@@ -51,9 +51,7 @@
                     v-show="
                       user === '管理员'
                         ? true
-                        : false || teachersData.name === uname
-                        ? true
-                        : false
+                        : false || scope.row.name === uname
                     "
                     @click="editTeacher(scope.row)"
                     >编辑</el-button

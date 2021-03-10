@@ -52,9 +52,7 @@
                     v-show="
                       user === '管理员'
                         ? true
-                        : false || studentsData.name === uname
-                        ? true
-                        : false
+                        : false || scope.row.name === uname
                     "
                     @click="editStudent(scope.row)"
                     >编辑</el-button
@@ -159,7 +157,12 @@
     </el-dialog>
 
     <!-- 编辑 -->
-    <edit-form ref="edit" :userData="userData" :curName="curName" />
+    <edit-form
+      ref="edit"
+      :userData="userData"
+      :curName="curName"
+      :curClass="curClass"
+    />
   </div>
 </template>
 
@@ -193,6 +196,8 @@ export default {
       userData: "",
       // 当前编辑的用户名
       curName: "",
+      // 当前班级号
+      curClass: "",
       // 默认显示的下标值
       activeNames: ["2"],
       // 表单label宽度
@@ -299,6 +304,7 @@ export default {
       }
       this.userData = row;
       this.curName = row.name;
+      this.curClass = row.c_id;
       this.$store.dispatch("team/aGetClassData");
       this.$store.dispatch("teacher/aGetTeachersData");
     },

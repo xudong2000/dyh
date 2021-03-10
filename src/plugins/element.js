@@ -51,6 +51,7 @@ import {
   Collapse,
   CollapseItem,
   Notification,
+  Divider,
 } from 'element-ui'
 
 Vue.use(Button)
@@ -101,6 +102,7 @@ Vue.use(Icon)
 Vue.use(Rate)
 Vue.use(Collapse)
 Vue.use(CollapseItem)
+Vue.use(Divider)
 Vue.prototype.$message = Message
 Vue.prototype.$confirm = MessageBox.confirm
 Vue.prototype.$notify = Notification

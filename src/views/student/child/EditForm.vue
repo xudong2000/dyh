@@ -457,7 +457,7 @@ export default {
       result: false,
     };
   },
-  props: ["userData", "curName"],
+  props: ["userData", "curName", "curClass"],
   computed: {
     ...mapState("team", ["allClassName"]),
     ...mapState("teacher", ["teachersName"]),
@@ -647,7 +647,32 @@ export default {
                     console.log("修改数据失败" + err);
                   }
                 );
+
                 this.$store.dispatch("student/aGetStudentsData");
+
+                if (this.curClass !== this.userData.c_id) {
+                  const c_name = this.curClass.substring(
+                    0,
+                    this.curClass.length - 1
+                  );
+
+                  const className = this.userData.c_id.substring(
+                    0,
+                    this.userData.c_id.length - 1
+                  );
+
+                  this.$store.dispatch("team/aDeleStudentByClass", [
+                    c_name,
+                    this.userData.name,
+                  ]);
+
+                  setTimeout(() => {
+                    this.$store.dispatch("team/aAddStudentByClass", [
+                      className,
+                      this.userData.name,
+                    ]);
+                  }, 1000);
+                }
                 this.$message({
                   showClose: true,
                   message: "修改成功",

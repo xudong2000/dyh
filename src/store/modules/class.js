@@ -1,4 +1,8 @@
-import { getClassData } from '../../network/class'
+import {
+  getClassData,
+  addStudentByClass,
+  deleStudentByClass,
+} from '../../network/class'
 
 const state = {
   // 保存所有班级数据
@@ -18,6 +22,30 @@ const actions = {
       },
       (err) => {
         console.log('获取数据失败' + err)
+      }
+    )
+  },
+
+  // 根据班级号添加学生
+  aAddStudentByClass({ commit }, data) {
+    addStudentByClass(data).then(
+      (res) => {
+        // console.log(res)
+      },
+      (err) => {
+        console.log('数据插入失败' + err)
+      }
+    )
+  },
+
+  // 根据班级号删除学生
+  aDeleStudentByClass({ commit }, data) {
+    deleStudentByClass(data).then(
+      (res) => {
+        // console.log(res)
+      },
+      (err) => {
+        console.log('数据删除失败' + err)
       }
     )
   },
