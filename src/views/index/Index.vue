@@ -2,12 +2,7 @@
   <div id="index">
     <el-tabs v-model="activeName">
       <el-tab-pane label="金牌讲师" name="first">
-        <el-carousel
-          :interval="4000"
-          type="card"
-          height="500px"
-          :autoplay="false"
-        >
+        <el-carousel :interval="4000" type="card" height="500px">
           <el-carousel-item v-for="item in teachersData" :key="item.t_id">
             <div class="profile">
               <div class="avatar">
