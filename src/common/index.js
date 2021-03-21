@@ -80,7 +80,7 @@ const specialtys = [
     id: 2,
     name: 'Java后端',
     avatar:
-      'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fs7.51cto.com%2Fwyfs02%2FM01%2F73%2F3F%2FwKioL1X4zfyRH-yTAABu41grSmY047.jpg&refer=http%3A%2F%2Fs7.51cto.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1617953544&t=90f8af13e56c5da1e0e3ee8f1593788b',
+      'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2893615075,2492346271&fm=26&gp=0.jpg',
     intro:
       'Java自1995年问世以来，因其卓越的通用性、高效性、平台移植性 和安全性等特性，成为全球范围内应用范围最广的开发语言，而且即使历经二十余年发展仍然在行业内保持着“常青树”的地位。Java软件工程师是指运用Java这种开发语言去完成软件产品的软件程序设计、开发、测试、维护升级等工作的人员。',
     number: 0,

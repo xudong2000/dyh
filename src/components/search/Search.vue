@@ -61,7 +61,7 @@ export default {
   methods: {
     // 处理添加学生操作
     addStudent() {
-      sessionStorage.setItem("regId", this.id);
+      localStorage.setItem("regId", this.id);
       const loading = this.$loading({
         lock: true,
         text: "正在为您跳转中......",
@@ -84,6 +84,17 @@ export default {
           type: "error",
         });
       }
+    },
+    // 防抖
+    debounce(value) {
+      let timer;
+      let num = 0;
+      return function () {
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+          console.log(value, num);
+        }, 500);
+      };
     },
   },
   watch: {

@@ -8,11 +8,11 @@ module.exports = {
           '^/api': '',
         },
       },
-      '/hq': {
-        target: 'http://localhost:8080',
+      '/io': {
+        target: 'http://localhost:5000',
         changeOrigin: true,
         pathRewrite: {
-          '^/hq': '',
+          '^/io': '',
         },
       },
     },

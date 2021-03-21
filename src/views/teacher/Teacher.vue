@@ -193,7 +193,7 @@ export default {
   },
   props: ["user"],
   created() {
-    this.uname = sessionStorage.getItem("username");
+    this.uname = localStorage.getItem("username");
     this.$store.dispatch("teacher/aGetTeachersData");
   },
   computed: {

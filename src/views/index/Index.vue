@@ -72,14 +72,6 @@ export default {
     };
   },
   created() {
-    // for (let i of this.studentsData) {
-    //   for (let j of this.teachersData) {
-    //     if (i.classTeacher === j.name) {
-    //       j.stuNum.push(i.name);
-    //     }
-    //   }
-    // }
-
     this.$store.dispatch("teacher/aGetTeachersData");
 
     for (let i of this.studentsData) {

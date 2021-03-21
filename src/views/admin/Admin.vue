@@ -1,41 +1,36 @@
 <template>
   <div id="admin">
-    <div class="box">
-      <div class="div"></div>
-    </div>
+    <el-input v-model="value" placeholder="请输入内容" clearable></el-input>
+    <el-button type="primary" @click="send">发送</el-button>
   </div>
 </template>
 
 <script>
 export default {
   name: "Admin",
+  data() {
+    return {
+      value: "",
+    };
+  },
+  mounted() {
+    this.$socket.emit("login", "hello"); //触发socket连接
+  },
+  methods: {
+    send() {
+      this.$socket.on("allUser", (users) => {
+        console.log(users);
+      });
+      this.$socket.emit("user", this.value, () => {});
+    },
+  },
 };
 </script>
 
-<style lang="less" scoped>
+<style scoped>
 #admin {
   width: 100%;
   height: 500px;
   background-color: #fff;
-  .box {
-    width: 300px;
-    height: 300px;
-    background-color: @color1;
-    &:hover {
-      background-color: @color2;
-      .div {
-        background-color: @color1;
-      }
-    }
-    .div {
-      width: @var;
-      height: 100px + 100;
-      background-color: @color2;
-    }
-  }
 }
-@color1: red;
-@color2: blue;
-@var: @a;
-@a: 50%;
 </style>

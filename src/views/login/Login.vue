@@ -141,6 +141,8 @@ export default {
   },
   mounted() {
     this.canvas();
+    const user = window.localStorage.getItem("username");
+    if (user) return this.$router.replace("/home");
   },
   methods: {
     // 背景动效
@@ -368,13 +370,12 @@ export default {
                   });
                 } else {
                   if (data[0].pwd === password) {
-                    console.log(data);
-                    window.sessionStorage.setItem(
+                    window.localStorage.setItem(
                       "curUser",
                       JSON.stringify(data)
                     );
-                    window.sessionStorage.setItem("identity", identity);
-                    window.sessionStorage.setItem("username", username);
+                    window.localStorage.setItem("identity", identity);
+                    window.localStorage.setItem("username", username);
                     this.$router.push("/home");
                     this.$message({
                       showClose: true,
@@ -407,12 +408,12 @@ export default {
                 } else {
                   if (data[0].pwd === password) {
                     console.log(data);
-                    window.sessionStorage.setItem(
+                    window.localStorage.setItem(
                       "curUser",
                       JSON.stringify(data)
                     );
-                    window.sessionStorage.setItem("identity", identity);
-                    window.sessionStorage.setItem("username", username);
+                    window.localStorage.setItem("identity", identity);
+                    window.localStorage.setItem("username", username);
                     this.$router.push("/home");
                     this.$message({
                       showClose: true,
@@ -445,12 +446,12 @@ export default {
                 } else {
                   if (data[0].pwd === password) {
                     console.log(data);
-                    window.sessionStorage.setItem(
+                    window.localStorage.setItem(
                       "curUser",
                       JSON.stringify(data)
                     );
-                    window.sessionStorage.setItem("identity", identity);
-                    window.sessionStorage.setItem("username", username);
+                    window.localStorage.setItem("identity", identity);
+                    window.localStorage.setItem("username", username);
                     this.$router.push("/home");
                     this.$message({
                       showClose: true,

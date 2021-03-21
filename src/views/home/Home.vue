@@ -94,11 +94,13 @@ export default {
       this.isLoading = false;
     }, 1100);
 
-    this.uname = window.sessionStorage.getItem("username");
-    this.id = window.sessionStorage.getItem("identity");
-    // let curUser = window.sessionStorage.getItem("curUser");
-    this.userData = JSON.parse(window.sessionStorage.getItem("curUser"));
-    // console.log(this.userData);
+    this.uname = window.localStorage.getItem("username");
+    this.id = window.localStorage.getItem("identity");
+    this.userData = JSON.parse(window.localStorage.getItem("curUser"));
+    if (!this.uname || !this.userData) {
+      window.localStorage.clear();
+      this.$router.replace("/login");
+    }
     this.timer = setInterval(() => {
       this.getTime();
     }, 1000);
@@ -165,7 +167,7 @@ export default {
           cancelButtonText: "稍等",
         })
           .then(() => {
-            window.sessionStorage.clear();
+            window.localStorage.clear();
             setTimeout(() => {
               this.$router.push("/login");
             }, 1000);

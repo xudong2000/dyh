@@ -206,7 +206,7 @@ export default {
     };
   },
   created() {
-    this.registerForm.identity = sessionStorage.getItem("regId");
+    this.registerForm.identity = localStorage.getItem("regId");
     this.registerForm.s_id = this.stuTotal;
     this.registerForm.t_id = this.teacTotal;
   },
