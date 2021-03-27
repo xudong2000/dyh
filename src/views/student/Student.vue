@@ -73,9 +73,8 @@
           </div>
         </el-card>
       </el-tab-pane>
-      <el-tab-pane label="可视化" name="second">
-        <div id="myCharts"></div>
-      </el-tab-pane>
+      <!-- <el-tab-pane label="可视化" name="second">
+      </el-tab-pane> -->
     </el-tabs>
 
     <!-- 详情 -->
@@ -183,13 +182,6 @@ export default {
     return {
       // 默认显示的标签页
       activeName: "first",
-      data: [
-        { value: 1548, name: "幽州" },
-        { value: 735, name: "荆州" },
-        { value: 510, name: "兖州" },
-        { value: 434, name: "益州" },
-        { value: 335, name: "西凉" },
-      ],
       // 详情页是否可见
       dialogVisible: false,
       // 当前用户数据
@@ -211,61 +203,6 @@ export default {
     this.uname = localStorage.getItem("username");
     this.$store.dispatch("student/aGetStudentsData");
   },
-  // mounted() {
-  //   var ROOT_PATH =
-  //     "https://cdn.jsdelivr.net/gh/apache/echarts-website@asf-site/examples";
-
-  //   var chartDom = document.getElementById("myCharts");
-  //   var myChart = this.$echarts.init(chartDom);
-  //   var option;
-
-  //   var weatherIcons = {
-  //     Sunny: ROOT_PATH + "/data/asset/img/weather/sunny_128.png",
-  //     Cloudy: ROOT_PATH + "/data/asset/img/weather/cloudy_128.png",
-  //     Showers: ROOT_PATH + "/data/asset/img/weather/showers_128.png",
-  //   };
-
-  //   option = {
-  //     title: {
-  //       text: "天气情况统计",
-  //       subtext: "虚构数据",
-  //       left: "center",
-  //     },
-  //     tooltip: {
-  //       trigger: "item",
-  //       formatter: "{a} <br/>{b} : {c} ({d}%)",
-  //     },
-  //     legend: {
-  //       bottom: 10,
-  //       left: "center",
-  //       data: ["西凉", "益州", "兖州", "荆州", "幽州"],
-  //     },
-  //     series: [
-  //       {
-  //         type: "pie",
-  //         radius: "65%",
-  //         center: ["50%", "50%"],
-  //         selectedMode: "single",
-  //         data: [
-  //           { value: 1548, name: "幽州" },
-  //           { value: 735, name: "荆州" },
-  //           { value: 510, name: "兖州" },
-  //           { value: 434, name: "益州" },
-  //           { value: 335, name: "西凉" },
-  //         ],
-  //         emphasis: {
-  //           itemStyle: {
-  //             shadowBlur: 10,
-  //             shadowOffsetX: 0,
-  //             shadowColor: "rgba(0, 0, 0, 0.5)",
-  //           },
-  //         },
-  //       },
-  //     ],
-  //   };
-
-  //   option && myChart.setOption(option);
-  // },
   computed: {
     ...mapState("student", ["studentsData"]),
   },
@@ -280,7 +217,6 @@ export default {
     // 处理查看个人资料
     handleClick(row) {
       this.dialogVisible = true;
-      //row.hometown = row.hometown.join("");
       this.userData = row;
     },
     // 处理关闭详情框

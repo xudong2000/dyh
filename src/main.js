@@ -4,10 +4,7 @@ import router from './router'
 import store from './store'
 import './plugins/element.js'
 import './assets/css/global.css'
-import './network/socket'
-import * as echarts from 'echarts'
-
-Vue.prototype.$echarts = echarts
+// import './network/socket'
 
 Vue.config.productionTip = false
 

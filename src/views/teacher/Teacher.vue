@@ -72,9 +72,8 @@
           </div>
         </el-card>
       </el-tab-pane>
-      <el-tab-pane label="可视化" name="second">
-        <div id="myCharts"></div>
-      </el-tab-pane>
+      <!-- <el-tab-pane label="可视化" name="second">
+      </el-tab-pane> -->
     </el-tabs>
 
     <!-- 详情 -->

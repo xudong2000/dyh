@@ -170,7 +170,6 @@ const mutations = {
 
   // 根据班级号查询对应学生
   mFindStudentByClass(state, c_id) {
-    console.log(c_id)
     state.classStudent = []
     for (let i of state.studentsData) {
       if (i.c_id === c_id) {

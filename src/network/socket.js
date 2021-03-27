@@ -23,6 +23,12 @@ try {
     console.log('客户端连接成功')
   })
 
+  socket.on('allUser', (users) => {
+    console.log(users)
+  })
+
+  socket.emit('user', this.value, () => {})
+
   socket.on('disconnect', () => {
     console.log('已断开连接')
   })

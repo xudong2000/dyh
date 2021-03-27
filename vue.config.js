@@ -8,13 +8,6 @@ module.exports = {
           '^/api': '',
         },
       },
-      '/io': {
-        target: 'http://localhost:5000',
-        changeOrigin: true,
-        pathRewrite: {
-          '^/io': '',
-        },
-      },
     },
   },
 }
