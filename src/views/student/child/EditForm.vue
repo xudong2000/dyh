@@ -1,5 +1,5 @@
 <template>
-  <div id="edit-form">
+  <div id="edit-student">
     <el-dialog
       title="编辑学生个人资料"
       :visible.sync="dialogFormVisible"
@@ -221,7 +221,7 @@ import { getStudentsDataByParams } from "../../../network/login";
 import { updateStudentByName } from "../../../network/student";
 
 export default {
-  name: "EditForm",
+  name: "EditStudent",
   data() {
     // 校验用户名
     var validateName = (rule, value, callback) => {
@@ -361,30 +361,37 @@ export default {
         {
           value: "web前端",
           label: "web前端",
+          count: 0,
         },
         {
           value: "Java后端",
           label: "Java后端",
+          count: 0,
         },
         {
           value: "UI设计",
           label: "UI设计",
+          count: 0,
         },
         {
           value: "软件测试",
           label: "软件测试",
+          count: 0,
         },
         {
           value: "运维实施",
           label: "运维实施",
+          count: 0,
         },
         {
           value: "嵌入式",
           label: "嵌入式",
+          count: 0,
         },
         {
           value: "其他专业",
           label: "其他专业",
+          count: 0,
         },
       ],
       // 宿舍号

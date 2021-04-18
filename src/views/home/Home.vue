@@ -37,30 +37,40 @@
             router
           >
             <el-menu-item index="/index">
-              <slot name="icon-one"><i class="el-icon-s-home"></i></slot>
+              <i class="el-icon-s-home"></i>
               <span slot="title">首页</span>
             </el-menu-item>
             <el-menu-item index="/student">
-              <slot name="icon-two"><i class="el-icon-menu"></i></slot>
+              <i class="el-icon-menu"></i>
               <span slot="title">学生管理</span>
             </el-menu-item>
             <el-menu-item index="/teacher">
-              <slot name="icon-three"><i class="el-icon-menu"></i></slot>
+              <i class="el-icon-menu"></i>
               <span slot="title">教师管理</span>
             </el-menu-item>
             <el-menu-item index="/class">
-              <slot name="icon-four"><i class="el-icon-menu"></i></slot>
+              <i class="el-icon-menu"></i>
               <span slot="title">班级管理</span>
             </el-menu-item>
-            <el-menu-item index="/admin" v-show="id === '管理员'">
-              <slot name="icon-four"><i class="el-icon-user-solid"></i></slot>
-              <span slot="title">管理员</span>
-            </el-menu-item>
+            <el-submenu index="1" v-show="id === '管理员'">
+              <template slot="title">
+                <i class="el-icon-s-tools"></i>
+                <span>高级设置</span>
+              </template>
+              <el-menu-item index="/admin">
+                <i class="el-icon-user-solid"></i>
+                <span slot="title">管理员</span>
+              </el-menu-item>
+              <el-menu-item index="/recycle">
+                <i class="el-icon-delete-solid"></i>
+                <span slot="title">回收站</span>
+              </el-menu-item>
+            </el-submenu>
           </el-menu>
         </el-aside>
 
         <el-main>
-          <router-view :user="id" />
+          <router-view :user="id" :time="time" />
         </el-main>
       </el-container>
     </el-container>

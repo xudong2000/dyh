@@ -72,8 +72,12 @@
           </div>
         </el-card>
       </el-tab-pane>
-      <!-- <el-tab-pane label="可视化" name="second">
-      </el-tab-pane> -->
+      <el-tab-pane label="可视化" name="second">
+        <div
+          style="width: 600px; padding: 20px; border: none"
+          id="myCharts"
+        ></div>
+      </el-tab-pane>
     </el-tabs>
 
     <!-- 详情 -->
@@ -168,6 +172,8 @@ import EditForm from "./child/EditForm";
 
 import Search from "../../components/search/Search";
 
+import { updateTeacherByName } from "../../network/teacher";
+
 export default {
   name: "Teacher",
   components: {
@@ -188,17 +194,106 @@ export default {
       dialogVisible: false,
       // 默认显示的下标值
       activeNames: ["2"],
+      // 图表数据
+      chartsData: [],
     };
   },
-  props: ["user"],
+  props: ["user", "time"],
   created() {
     this.uname = localStorage.getItem("username");
     this.$store.dispatch("teacher/aGetTeachersData");
+  },
+  mounted() {
+    this.tjTeacherData();
+    this.barCharts();
   },
   computed: {
     ...mapState("teacher", ["teachersData"]),
   },
   methods: {
+    // 统计老师学历数据
+    tjTeacherData() {
+      //console.log(this.teachersData);
+      let education = [
+        { value: 0, name: "初中" },
+        { value: 0, name: "中专" },
+        { value: 0, name: "高中" },
+        { value: 0, name: "大专" },
+        { value: 0, name: "本科" },
+        { value: 0, name: "硕士" },
+        { value: 0, name: "博士" },
+      ];
+      for (let i of this.teachersData) {
+        for (let j of education) {
+          if (i.education === j.name) {
+            j.value++;
+          }
+        }
+      }
+      this.chartsData = education;
+    },
+    // 饼状图
+    barCharts() {
+      Object.defineProperty(
+        document.getElementById("myCharts"),
+        "clientWidth",
+        {
+          get: function () {
+            return 600;
+          },
+        }
+      );
+      Object.defineProperty(
+        document.getElementById("myCharts"),
+        "clientHeight",
+        {
+          get: function () {
+            return 500;
+          },
+        }
+      );
+
+      let myChart = this.$echarts.init(document.getElementById("myCharts"));
+      let option = {
+        // 标题
+        title: {
+          text: "学历统计",
+          subtext: "实时更新",
+          left: "center",
+        },
+        // 提示框
+        tooltip: {
+          trigger: "item",
+        },
+        // 图例
+        legend: {
+          orient: "vertical",
+          left: "left",
+        },
+        // 图表类型
+        series: [
+          {
+            name: "访问来源",
+            type: "pie",
+            radius: "50%",
+            left: "left",
+            // 图表数据
+            data: [],
+            emphasis: {
+              scale: true,
+              scaleSize: 10,
+              itemStyle: {
+                shadowBlur: 50,
+                shadowOffsetX: 0,
+                shadowColor: "rgba(0, 0, 0, 0.5)",
+              },
+            },
+          },
+        ],
+      };
+      option.series[0].data = this.chartsData;
+      myChart.setOption(option);
+    },
     // 给表格指定行添加背景色
     tableRowClassName({ row, rowIndex }) {
       if (row.startTime === "2000-01-01") {
@@ -240,8 +335,12 @@ export default {
         cancelButtonText: "取消",
         type: "warning",
       })
-        .then(() => {
-          this.$store.dispatch("teacher/aDeleTeacherByName", rows[index].name);
+        .then(async () => {
+          await updateTeacherByName([
+            rows[index].name,
+            { isDelete: true, deleTime: this.time },
+          ]);
+          rows.splice(index, 1);
           this.$store.dispatch("teacher/aGetTeachersData");
           this.$message({
             showClose: true,
@@ -264,7 +363,8 @@ export default {
 <style>
 #teacher {
   width: 100%;
-  height: 100%;
+  height: auto;
+  min-height: 640px;
   background-color: #fff;
   padding: 20px;
 }

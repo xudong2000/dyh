@@ -7,3 +7,12 @@ export function getAdminsData() {
     url: '/admin',
   })
 }
+
+// 导出删除指定管理员数据方法
+export function deleteAdminsData(data) {
+  return request({
+    method: 'post',
+    url: '/deleAdmin',
+    data,
+  })
+}

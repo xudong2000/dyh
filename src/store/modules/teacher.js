@@ -1,8 +1,4 @@
-import {
-  getTeachersData,
-  deleTeacherByName,
-  fuzzyQueryByName,
-} from '../../network/teacher'
+import { getTeachersData, fuzzyQueryByName } from '../../network/teacher'
 
 const state = {
   // 保存所有老师数据
@@ -27,18 +23,6 @@ const actions = {
       },
       (err) => {
         console.log('获取数据失败' + err)
-      }
-    )
-  },
-
-  // 通过姓名删除指定老师
-  aDeleTeacherByName({ commit }, uname) {
-    deleTeacherByName(uname).then(
-      (res) => {
-        // console.log(res)
-      },
-      (err) => {
-        console.log('删除数据失败' + err)
       }
     )
   },

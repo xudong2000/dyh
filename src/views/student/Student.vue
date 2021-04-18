@@ -73,8 +73,12 @@
           </div>
         </el-card>
       </el-tab-pane>
-      <!-- <el-tab-pane label="可视化" name="second">
-      </el-tab-pane> -->
+      <el-tab-pane label="可视化" name="second">
+        <div
+          style="width: 600px; padding: 20px; border: none"
+          id="myCharts"
+        ></div>
+      </el-tab-pane>
     </el-tabs>
 
     <!-- 详情 -->
@@ -172,6 +176,8 @@ import EditForm from "./child/EditForm";
 
 import Search from "../../components/search/Search";
 
+import { updateStudentByName } from "../../network/student";
+
 export default {
   name: "Student",
   components: {
@@ -196,17 +202,107 @@ export default {
       formLabelWidth: "100px",
       // 当前登录的用户名
       uname: "",
+      // 图表数据
+      chartsData: [],
     };
   },
-  props: ["user"],
+  props: ["user", "time"],
   created() {
     this.uname = localStorage.getItem("username");
     this.$store.dispatch("student/aGetStudentsData");
+  },
+  mounted() {
+    this.tjStudentData();
+    this.myCharts();
   },
   computed: {
     ...mapState("student", ["studentsData"]),
   },
   methods: {
+    // 统计学生所学专业数据
+    tjStudentData() {
+      let allSpecialty = this.$refs.edit.mySpecialty;
+
+      for (let i of this.studentsData) {
+        for (let j of allSpecialty) {
+          if (i.specialty === j.value) {
+            j.count++;
+          }
+        }
+      }
+
+      let obj = {};
+
+      for (let i of allSpecialty) {
+        obj = {};
+        obj.value = i.count;
+        obj.name = i.label;
+        this.chartsData.push(obj);
+      }
+    },
+    // 饼状图
+    myCharts() {
+      Object.defineProperty(
+        document.getElementById("myCharts"),
+        "clientWidth",
+        {
+          get: function () {
+            return 600;
+          },
+        }
+      );
+      Object.defineProperty(
+        document.getElementById("myCharts"),
+        "clientHeight",
+        {
+          get: function () {
+            return 500;
+          },
+        }
+      );
+
+      let myChart = this.$echarts.init(document.getElementById("myCharts"));
+      let option = {
+        // 标题
+        title: {
+          text: "专业统计",
+          subtext: "实时更新",
+          left: "center",
+        },
+        // 提示框
+        tooltip: {
+          trigger: "item",
+        },
+        // 图例
+        legend: {
+          orient: "vertical",
+          left: "left",
+        },
+        // 图表类型
+        series: [
+          {
+            name: "访问来源",
+            type: "pie",
+            radius: "50%",
+            left: "left",
+            // 图表数据
+            data: [],
+            emphasis: {
+              scale: true,
+              scaleSize: 10,
+              itemStyle: {
+                shadowBlur: 50,
+                shadowOffsetX: 0,
+                shadowColor: "rgba(0, 0, 0, 0.5)",
+              },
+            },
+          },
+        ],
+      };
+      option.series[0].data = this.chartsData;
+      myChart.setOption(option);
+    },
+
     // 给表格指定行添加背景色
     tableRowClassName({ row, rowIndex }) {
       if (row.startTime === "2000-01-01") {
@@ -251,8 +347,18 @@ export default {
         cancelButtonText: "取消",
         type: "warning",
       })
-        .then(() => {
-          this.$store.dispatch("student/aDeleStudentByName", rows[index].name);
+        .then(async () => {
+          await updateStudentByName([
+            rows[index].name,
+            { isDelete: true, deleTime: this.time },
+          ]);
+          rows.splice(index, 1);
+          this.$store.dispatch("student/aGetStudentsData");
+          this.$message({
+            showClose: true,
+            type: "success",
+            message: "删除成功",
+          });
           this.$store.dispatch("student/aGetStudentsData");
           this.$message({
             showClose: true,
@@ -275,7 +381,8 @@ export default {
 <style>
 #student {
   width: 100%;
-  height: 100%;
+  height: auto;
+  min-height: 640px;
   background-color: #fff;
   padding: 20px;
 }

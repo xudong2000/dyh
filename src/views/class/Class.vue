@@ -1,7 +1,11 @@
 <template>
   <div id="class">
     <search :user="user" id="班级" />
+    <el-button type="text" size="small" style="float: right" @click="addClass"
+      >增加班级</el-button
+    >
     <el-divider></el-divider>
+    <!-- 学生列表 -->
     <ul class="stuList" v-show="classStudent.length !== 0">
       <li
         v-for="item in classStudent"
@@ -95,6 +99,9 @@
       </span>
     </el-dialog>
 
+    <!-- 增加班级 -->
+    <edit-form ref="edit" />
+
     <div class="nullData" v-show="classStudent.length === 0">
       <span>查询结果为空</span>
     </div>
@@ -106,10 +113,13 @@ import { mapState } from "vuex";
 
 import Search from "../../components/search/Search";
 
+import EditForm from "./child/EditForm";
+
 export default {
   name: "Teacher",
   components: {
     Search,
+    EditForm,
   },
   data() {
     return {
@@ -129,6 +139,7 @@ export default {
     ...mapState("student", ["studentsData", "classStudent"]),
   },
   methods: {
+    // 查看学生详细数据
     lookDetail(stuData) {
       this.dialogVisible = true;
       this.curStuData = stuData;
@@ -142,6 +153,10 @@ export default {
         })
         .catch((_) => {});
     },
+    // 增加班级
+    addClass() {
+      this.$refs.edit.dialogVisible = true;
+    },
   },
 };
 </script>
@@ -149,7 +164,8 @@ export default {
 <style>
 #class {
   width: 100%;
-  height: 100%;
+  height: auto;
+  min-height: 640px;
   background-color: #fff;
   padding: 50px;
 }
@@ -162,7 +178,7 @@ export default {
 .stuList li {
   width: 60px;
   height: 90px;
-  margin: 10px 20px;
+  margin: 10px 40px;
 }
 .stuAvatar {
   width: 100%;

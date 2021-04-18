@@ -4,7 +4,12 @@ import router from './router'
 import store from './store'
 import './plugins/element.js'
 import './assets/css/global.css'
-// import './network/socket'
+import * as echarts from 'echarts'
+import { VueJsonp } from 'vue-jsonp'
+
+Vue.use(VueJsonp)
+
+Vue.prototype.$echarts = echarts
 
 Vue.config.productionTip = false
 

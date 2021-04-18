@@ -11,6 +11,7 @@ const Student = () => import('../views/student/Student.vue')
 const Teacher = () => import('../views/teacher/Teacher.vue')
 const Class = () => import('../views/class/Class.vue')
 const Admin = () => import('../views/admin/Admin.vue')
+const Recycle = () => import('../views/recycle/Recycle.vue')
 
 Vue.use(VueRouter)
 
@@ -51,6 +52,10 @@ const routes = [
       {
         path: '/admin',
         component: Admin,
+      },
+      {
+        path: '/recycle',
+        component: Recycle,
       },
     ],
   },

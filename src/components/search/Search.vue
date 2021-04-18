@@ -38,8 +38,8 @@
         style="float: right; padding: 3px 0"
         type="text"
         round
-        v-show="user === '管理员' ? true : false"
-        @click="addStudent()"
+        v-show="user === '管理员' && id !== '班级' ? true : false"
+        @click="addUser()"
         >增加{{ this.id }}</el-button
       >
     </el-form>
@@ -59,8 +59,8 @@ export default {
   props: ["user", "id"],
   created() {},
   methods: {
-    // 处理添加学生操作
-    addStudent() {
+    // 处理添加用户操作
+    addUser() {
       localStorage.setItem("regId", this.id);
       const loading = this.$loading({
         lock: true,
@@ -84,17 +84,6 @@ export default {
           type: "error",
         });
       }
-    },
-    // 防抖
-    debounce(value) {
-      let timer;
-      let num = 0;
-      return function () {
-        clearTimeout(timer);
-        timer = setTimeout(() => {
-          console.log(value, num);
-        }, 500);
-      };
     },
   },
   watch: {

@@ -1,34 +1,11 @@
 <template>
   <div id="index">
     <el-tabs v-model="activeName">
-      <el-tab-pane label="金牌讲师" name="first">
-        <el-carousel :interval="4000" type="card" height="500px">
-          <el-carousel-item v-for="item in teachersData" :key="item.t_id">
-            <div class="profile">
-              <div class="avatar">
-                <img :src="item.avatar" alt="" />
-              </div>
-              <div class="nickName">
-                <span>{{ item.name }}</span>
-                <span>{{ item.course }}</span>
-              </div>
-              <div class="school">
-                <span>{{ item.school }}</span>
-                <span>{{ item.major }}</span>
-                <span>{{ item.education }}</span>
-              </div>
-              <div class="information">
-                <span>{{ item.intro }}</span>
-              </div>
-              <div class="totalNum">
-                <span>已教学生人数：{{ stuNumber }}人</span>
-              </div>
-            </div>
-          </el-carousel-item>
-        </el-carousel>
+      <el-tab-pane label="可视化" name="first">
+        <div style="border: none" id="myCharts"></div>
       </el-tab-pane>
 
-      <el-tab-pane label="王牌专业" name="second">
+      <el-tab-pane label="热门专业" name="second">
         <el-carousel :interval="4000" type="card" height="500px">
           <el-carousel-item v-for="item in specialtys" :key="item.id">
             <div class="specialty">
@@ -53,7 +30,7 @@
 </template>
 
 <script>
-import { lecturers, specialtys } from "../../common/index";
+import { specialtys } from "../../common/index";
 
 import { mapState } from "vuex";
 
@@ -63,9 +40,7 @@ export default {
     return {
       // 默认标签页
       activeName: "first",
-      // 金牌讲师
-      lecturers,
-      // 王牌专业
+      // 热门专业
       specialtys,
       // 已教学生人数
       stuNumber: 0,
@@ -73,7 +48,6 @@ export default {
   },
   created() {
     this.$store.dispatch("teacher/aGetTeachersData");
-
     for (let i of this.studentsData) {
       for (let j of this.specialtys) {
         if (i.specialty === j.name) {
@@ -82,9 +56,76 @@ export default {
       }
     }
   },
+  mounted() {
+    this.barCharts();
+    // console.log(this.studentsData.length);
+    // console.log(this.teachersData.length);
+    // console.log(this.allClassData.length);
+  },
   computed: {
-    ...mapState("teacher", ["teachersData"]),
     ...mapState("student", ["studentsData"]),
+    ...mapState("teacher", ["teachersData"]),
+    ...mapState("team", ["allClassData"]),
+  },
+  methods: {
+    // 柱状图
+    barCharts() {
+      Object.defineProperty(
+        document.getElementById("myCharts"),
+        "clientWidth",
+        {
+          get: function () {
+            return 800;
+          },
+        }
+      );
+      Object.defineProperty(
+        document.getElementById("myCharts"),
+        "clientHeight",
+        {
+          get: function () {
+            return 500;
+          },
+        }
+      );
+      let barCharts = this.$echarts.init(document.getElementById("myCharts"));
+      let option = {
+        tooltip: {
+          trigger: "axis",
+          axisPointer: {
+            type: "shadow",
+          },
+        },
+        xAxis: {
+          type: "category",
+          data: ["学生人数", "教师人数", "班级数量", "管理员"],
+          axisTick: {
+            alignWithLabel: true,
+          },
+        },
+        yAxis: {
+          type: "value",
+        },
+        series: [
+          {
+            data: [],
+            type: "bar",
+            showBackground: true,
+            backgroundStyle: {
+              color: "rgba(180, 180, 180, 0.2)",
+            },
+          },
+        ],
+      };
+      option.xAxis.data = ["学生人数", "教师人数", "班级数量", "管理员"];
+      option.series[0].data = [
+        this.studentsData.length,
+        this.teachersData.length,
+        this.allClassData.length,
+        3,
+      ];
+      barCharts.setOption(option);
+    },
   },
 };
 </script>
@@ -92,7 +133,8 @@ export default {
 <style scoped>
 #index {
   width: 100%;
-  height: 100%;
+  height: auto;
+  min-height: 640px;
   background-color: #fff;
   padding: 20px;
 }
@@ -198,7 +240,6 @@ export default {
 .intro {
   width: 100%;
   height: 200px;
-  border: 1px solid #ccc;
   margin-bottom: 10px;
   font-size: 14px;
   padding: 5px;

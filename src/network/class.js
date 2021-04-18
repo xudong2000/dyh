@@ -1,10 +1,20 @@
 import { request } from './axios'
 
-// 导出获取所有班级
-export function getClassData() {
+// 导出创建班级
+export function createClass(data) {
   return request({
-    method: 'get',
+    method: 'post',
     url: '/class',
+    data,
+  })
+}
+
+// 导出获取所有班级
+export function getClassData(data) {
+  return request({
+    method: 'post',
+    url: '/findClass?',
+    data,
   })
 }
 

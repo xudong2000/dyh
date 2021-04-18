@@ -1,5 +1,5 @@
 <template>
-  <div id="edit-form">
+  <div id="edit-teacher">
     <el-dialog
       title="编辑老师个人资料"
       :visible.sync="dialogFormVisible"
@@ -208,7 +208,7 @@ import { getTeachersDataByParams } from "../../../network/login";
 import { updateTeacherByName } from "../../../network/teacher";
 
 export default {
-  name: "EditForm",
+  name: "EditTeacher",
   data() {
     // 校验用户名
     var validateName = (rule, value, callback) => {
@@ -390,12 +390,12 @@ export default {
           label: "初中",
         },
         {
-          value: "高中",
-          label: "高中",
-        },
-        {
           value: "中专",
           label: "中专",
+        },
+        {
+          value: "高中",
+          label: "高中",
         },
         {
           value: "大专",
@@ -410,8 +410,8 @@ export default {
           label: "硕士",
         },
         {
-          value: "研究生",
-          label: "研究生",
+          value: "博士",
+          label: "博士",
         },
       ],
       // 表单label宽度

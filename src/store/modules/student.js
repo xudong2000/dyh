@@ -1,8 +1,4 @@
-import {
-  getStudentsData,
-  deleStudentByName,
-  fuzzyQueryByName,
-} from '../../network/student'
+import { getStudentsData, fuzzyQueryByName } from '../../network/student'
 
 const state = {
   // 保存所有学生数据
@@ -27,18 +23,6 @@ const actions = {
       },
       (err) => {
         console.log('获取数据失败' + err)
-      }
-    )
-  },
-
-  // 通过姓名删除指定学生
-  aDeleStudentByName({ commit }, uname) {
-    deleStudentByName(uname).then(
-      (res) => {
-        // console.log(res)
-      },
-      (err) => {
-        console.log('删除数据失败' + err)
       }
     )
   },

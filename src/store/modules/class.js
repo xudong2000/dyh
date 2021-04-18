@@ -16,7 +16,7 @@ const getters = {}
 const actions = {
   // 获取所有班级数据
   aGetClassData({ commit }) {
-    getClassData().then(
+    getClassData({}).then(
       (res) => {
         commit('mGetClassData', res.data.data)
       },
